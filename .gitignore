@@ -1,0 +1,12 @@
+/sf2GalileaMontijo.zip
+/app/logs/*
+/app/cache/*
+/nbproject
+/vendor
+/web/uploads/galeria/thumbnails/*
+/web/uploads/galeria/*
+/web/uploads/votaciones/thumbnails/*
+/web/uploads/votaciones/*
+/web/uploads/publicaciones/*
+/web/uploads/publicidad/*
+

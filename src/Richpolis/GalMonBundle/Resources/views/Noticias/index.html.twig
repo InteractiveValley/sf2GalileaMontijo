@@ -1,0 +1,59 @@
+{% extends 'RichpolisGalMonBundle::layout.html.twig' %}
+
+{% block navigation %}
+<nav>
+    <ul class="navigation nav nav-pills">
+        <li><a href="{{path('RichpolisGalMonBundle_homepage')}}"><i class="icon-home"></i>Home</a></li>
+        <li class="active"><a href="{{path('RichpolisGalMonBundle_noticias')}}">Noticias</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_trayectoria')}}">Trayectoria</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_amigos')}}">Amigos</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_contacto')}}">Contacto</a></li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block body %}
+<section id="noticias">
+    <h1 class="color-azul-1">Noticias</h1>
+    <article id="noticia-id" class="container-fluid"  style="margin-bottom: 30px;">
+        <h2 class="noticia-titulo">Titulo de noticia</h2>
+        <div class="noticia-body row-fluid">
+            <div class="noticia-imagen img-polaroid span4">
+                <img src="http://placehold.it/350x270" alt="">
+            </div>
+            <div class="span8 justificar">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+            
+        </div>        
+    </article>
+    <article id="noticia-id" class="container-fluid"  style="margin-bottom: 30px;">
+        <h2 class="noticia-titulo">Titulo de noticia</h2>
+        <div class="noticia-body row-fluid">
+            <div class="noticia-imagen img-polaroid span4">
+                <img src="http://placehold.it/350x270" alt="">
+            </div>
+            <div class="span8 justificar">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+            
+        </div>        
+    </article>
+    <article id="noticia-id" class="container-fluid"  style="margin-bottom: 30px;">
+        <h2 class="noticia-titulo">Titulo de noticia</h2>
+        <div class="noticia-body row-fluid">
+            <div class="noticia-imagen img-polaroid span4">
+                <img src="http://placehold.it/350x270" alt="">
+            </div>
+            <div class="span8 justificar">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+            
+        </div>        
+    </article>
+    <div class="container-fluid pagination pagination-centered">
+        <ul>
+            <li><a href="#">Prev</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">Next</a></li>
+        </ul>
+    </div>
+</section>
+{% endblock %}				

@@ -1,0 +1,35 @@
+{% extends "RichpolisBackendBundle::backend.html.twig" %}
+
+{% block menu_horizontal %}
+    {% include 'RichpolisBackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'fans'} %}
+{% endblock %}
+
+
+{% block siderbar %}  
+            <ul class="nav nav-list">
+              <li class="nav-header">Fans</li>
+              <li><a href="{{path('RichpolisBackendBundle_fans')}}">Fans</a></li>
+              <li class="active"><a href="{{path('RichpolisBackendBundle_clubs_fans')}}">Clubs de Fans</a></li>
+              </ul>
+{% endblock %} 
+
+{% block body %}
+<h1>Nuevo club de fans</h1>
+
+<form action="{{ path('clubs_fans_create') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p style="margin-top: 10px;">
+        <ul class="record_actions">
+            <li style=" list-style: none; display: inline;">
+                <button class="btn btn-primary" type="submit">Guardar</button>
+            </li>
+            <li style=" list-style: none;  display: inline;">
+                <a class="btn" href="{{ path('clubs_fans') }}">
+                    Regresar
+                </a>
+            </li>
+        </ul>
+    </p>
+</form>
+
+{% endblock %}

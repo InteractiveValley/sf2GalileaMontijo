@@ -1,0 +1,225 @@
+{% extends 'RichpolisGalMonBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/prettyPhoto.css') }}" type="text/css" media="all" />
+{% endblock %}
+
+
+
+{% block body %}
+<section id="home-section-1">
+    <article id="video-semana">
+        <h1 style="font-family: 'oswaldregular'; font-size: 22pt;" class="color-azul-1">Video de la semana!</h1>
+        <div style="text-align: center;">
+            <a href="http://www.youtube.com/watch?v=4ndoBRuFkMs&feature=share&list=PLkO5GeqaOpGaDXIR9FfXmiT_FDpIff8Z9" rel="prettyPhoto" title="">
+                <img style=" margin-top: 20px;" src="{{ asset('bundles/richpolisgalmon/images/reproducir.png') }}" alt="YouTube" />
+            </a>
+        </div>        
+    </article>
+    <article id="twitter-feed">
+        <h1 style="font-family: 'oswaldregular';font-size: 12pt; line-height: 20px;"  class="color-azul-2" style="font-size: 12px;">
+            <ul style=" list-style: none; padding: 0px; float: right;">
+                <li style=" display: inline; float: right;">
+                    <img src="{{ asset('bundles/richpolisgalmon/images/facebook.png') }}"/>
+                </li>
+                <li style=" display: inline; float: right;">
+                    <img src="{{ asset('bundles/richpolisgalmon/images/twitter.png') }}"/>
+                </li>
+            </ul>
+            <span>@GalileaMontijo<br/>facebook.com/GalileamOficial</span>
+
+        </h1>
+        {% include 'RichpolisGalMonBundle:Default:twitter.html.twig' with {'twitterName': 'GalileaMontijo','twitterDescripcion':'Galilea Montijo'} %}
+    </article>    
+    <article id="lo-que-estoy-viendo">
+        <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-3">Lo que estoy viendo!</h1>
+        {% include 'RichpolisGalMonBundle:Default:loqueestoyviendo.html.twig' %}
+    </article>
+    <article id="media-kit-1" class="media-kit">
+        <div style="width: 100%; text-align: center; margin-top: 30px;">
+            <img src="http://placehold.it/460x130" alt=""> 
+        </div>
+    </article>    
+</section>
+<section id="home-section-2">
+    <article id="media-kit-2" class="media-kit">
+        <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-2">Definitivamente esto me encanto!</h1>
+        <div style="width: 100%; text-align: center; margin-top: 20px;"> 
+            <img src="http://placehold.it/460x260" alt=""> 
+            <p style="margin-top: 20px; text-align: left; margin-left: 20px;">Thumbnail caption right here...</p> 
+        </div>
+    </article>
+    <article id="decora-tu-pantalla">
+        <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-4">Decora tu pantalla!</h1>
+        {% include 'RichpolisGalMonBundle:Default:decoratupantalla.html.twig' %}
+    </article>
+</section>
+<section id="home-section-3">
+    <article id="galeria-oficial">
+        <h1 style="font-family: 'oswaldregular'; font-size: 22pt;margin-bottom: 0px; text-align: left;" class="color-azul-2">Galeria oficial!</h1>
+        {% include 'RichpolisGalMonBundle:Default:galeriaoficial.html.twig' %}
+    </article>
+    <div style="clear: both;"></div>
+    <article id="media-kit-3" class="media-kit">
+        <div class="publicidad">
+            <ul id="lista-publicidad">
+                <li class="publicidad-item">
+                    <img src="http://placehold.it/680x120" alt="">
+                </li>
+                <li class="publicidad-item" style=" margin-right: 0px;">
+                    <img src="http://placehold.it/325x120" alt="">
+                </li>
+            </ul>
+        </div>
+    </article>
+    <div style="clear: both;"></div>
+</section>
+<section id="home-section-4">
+    <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-2" style="margin-bottom: 0px;">Tus fotos!</h1>
+    <article id="tus-fotos">
+        {% include 'RichpolisGalMonBundle:Default:tusfotos.html.twig' %}
+     </article>
+</section>
+    <section id="home-section-5">
+        <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-2" style="margin-bottom: 0px;">Sube tu foto y explora las demas! la foto mas votada aparecera en la portada!</h1>
+        <article id="foto-mas-votada-semana">
+        {% include 'RichpolisGalMonBundle:Default:votaciones.html.twig' %}
+        </article>
+        <article id="media-kit-3" class="media-kit">
+                <div class="publicidad">
+                    <ul id="lista-publicidad">
+                        <li class="publicidad-item">
+                            <img src="http://placehold.it/680x120" alt="">
+                        </li>
+                        <li class="publicidad-item" style=" margin-right: 0px;">
+                            <img src="http://placehold.it/325x120" alt="">
+                        </li>
+                    </ul>
+                </div>
+        </article>
+        <article id="newsletter">
+            
+        </article>    
+     </section>
+<div id="modalFormularioLoqueestoyviendo" data-backdrop="true" tabindex="-1" role="dialog" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3 id="titulo-form-modal">Modal header</h3>
+  </div>
+  <div id="body-form-modal" class="modal-body">
+    <p>One fine body…</p>
+  </div>
+  <div id="footer-form-modal" class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</a>
+    <a href="#" class="btn btn-primary">Guardar cambios</a>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+        <script src="{{ asset('js/jquery.prettyPhoto.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('js/sfrichpolis.js') }}" type="text/javascript"></script>
+        <script>
+
+        $(document).ready(function(){
+            $.configPrettyPhoto();
+            $(".galeria-control-derecha").css({"visibility":"hidden"});
+            $(".galeria-control-izquierda").css({"visibility":"hidden"});
+            var $galeriaLoQueEstoyViendo=$("#contenedor-loqueestoyviendo");
+            var $galeriaDecoraTuPantalla=$(".contenedor-decora-tu-pantalla");
+            var $galeriaGaleriaOficial=$(".contenedor-galeria-oficial");
+            var $galeriaTusFotos=$(".contenedor-galeria-tus-fotos");
+    
+            countGaleria($galeriaLoQueEstoyViendo,4);
+            countGaleria($galeriaDecoraTuPantalla,1);
+            countGaleria($galeriaGaleriaOficial,6);
+            countGaleria($galeriaTusFotos,6);
+    
+            $galeriaLoQueEstoyViendo.find(".galeria-control-derecha").click(function(){
+                galeriaItemDerecha($galeriaLoQueEstoyViendo,100,4);
+            });
+            $galeriaLoQueEstoyViendo.find(".galeria-control-izquierda").click(function(){
+                galeriaItemIzquierda($galeriaLoQueEstoyViendo,100,4);
+            });
+    
+            $galeriaDecoraTuPantalla.find(".galeria-control-derecha").click(function(){
+                galeriaItemDerecha($galeriaDecoraTuPantalla,460,1);
+            });
+            $galeriaDecoraTuPantalla.find(".galeria-control-izquierda").click(function(){
+                galeriaItemIzquierda($galeriaDecoraTuPantalla,460,1);
+            });
+    
+    
+            $galeriaGaleriaOficial.find(".galeria-control-derecha").click(function(){
+                galeriaItemDerecha($galeriaGaleriaOficial,165,6);
+            });
+            $galeriaGaleriaOficial.find(".galeria-control-izquierda").click(function(){
+                galeriaItemIzquierda($galeriaGaleriaOficial,165,6);
+            });
+    
+            $galeriaTusFotos.find(".galeria-control-derecha").click(function(){
+                galeriaItemDerecha($galeriaTusFotos,165,6);
+            });
+            $galeriaTusFotos.find(".galeria-control-izquierda").click(function(){
+                galeriaItemIzquierda($galeriaTusFotos,165,6);
+            });
+        });
+
+        function loadImagenShowLoQueEstoyViendo(imagen){
+            $(".imagen-show").fadeOut("fast",function(){
+                $(".imagen-show").css({"backgroundImage":"url(/images/demo/"+imagen+")"});
+                $(".imagen-show").fadeIn("fast");
+            });
+        }
+
+        function galeriaItemDerecha($lista,valor,indice){
+            var $valor=Math.ceil(valor*indice);
+            $lista.find("ul").animate({"left":"-="+$valor+"px"},1000,"easeOutBack");
+            visualzarControlesGaleria($lista,1,indice);
+        }
+
+        function galeriaItemIzquierda($lista,valor,indice){
+            var $valor=Math.ceil(valor*indice);
+            $lista.find("ul").animate({"left":"+="+$valor+"px"},1000,"easeInBack");
+            visualzarControlesGaleria($lista,-1,indice);
+        }
+
+        function countGaleria($lista,indice){
+            var largo=$lista.find("li.galeria-item").size();
+            $lista.attr("largo",largo).attr("indice",indice);
+            visualzarControlesGaleria($lista,0,indice);
+        }
+
+        function visualzarControlesGaleria($lista,valor,index){
+            var indice=parseInt($lista.attr("indice"),10);
+            var largo=parseInt($lista.attr("largo"),10);
+            if(valor>0){
+                indice+=index;
+            }else if(valor<0){
+                indice-=index;
+            }
+    
+            if(indice>index){
+                $lista.find(".galeria-control-izquierda").css({"visibility":"visible"});
+            }else{
+                $lista.find(".galeria-control-izquierda").css({"visibility":"hidden"});
+            }
+    
+            if(indice<largo){
+                $lista.find(".galeria-control-derecha").css({"visibility":"visible"});
+            }else{
+                $lista.find(".galeria-control-derecha").css({"visibility":"hidden"});
+            }
+    
+            $lista.attr("largo",largo).attr("indice",indice);
+        }
+
+
+            </script>
+
+{% endblock %}
+

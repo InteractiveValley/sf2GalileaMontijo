@@ -1,0 +1,18 @@
+{% extends "RichpolisBackendBundle::backend.html.twig" %}
+
+{% block menu_horizontal %}
+    {% include 'RichpolisBackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'publicidad'} %}
+{% endblock %}
+
+{% block body %}
+<h1>Seleccionar tipo de publicidad</h1>
+<ul class="nav nav-list">
+    <li class="nav-header">Publicidad</li>
+    {% for key,value in tipos %}
+    <li class="tipo-publicidad" tipo="{{key}}">
+        <a href="{{path('publicidad_por_tipo',{'tipo': key })}}">{{value}}</a>
+    </li>
+    {% endfor %}    
+</ul>
+{% endblock %}
+

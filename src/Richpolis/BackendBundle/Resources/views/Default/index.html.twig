@@ -1,0 +1,45 @@
+{% extends "RichpolisBackendBundle::backend.html.twig" %}
+
+{% block body %}  
+{# block de cuerpo de pagina 9 span #}
+<div class="hero-unit">
+    <h1>Bienvenidos!</h1>
+    <p>Este es un sistema de administracion de contenidos, para conocer mas al respecto favor de dar click en el siguiente boton para conocer mas sobre el.</p>
+    <p><a href="{{path('RichpolisBackendBundle_navegar')}}" class="btn btn-primary btn-large">Navegar &raquo;</a></p>
+</div>
+<div class="row-fluid">
+    <div class="span4">
+        <h2>Galerias</h2>
+        <p>Administrar las galerias de la pagina. </p>
+        <p><a class="btn" href="{{path('RichpolisBackendBundle_categorias_galerias')}}">Galerias &raquo;</a></p>
+    </div><!--/span-->
+    <div class="span4">
+        <h2>Videos</h2>
+        <p>Administrar el video de la semana. </p>
+        <p><a class="btn" href="{{path('RichpolisBackendBundle_videos')}}">Videos &raquo;</a></p>
+    </div><!--/span-->
+    <div class="span4">
+        <h2>Publicaciones</h2>
+        <p>Administrar las noticias, trayectoria y demas contenidos de la pagina. </p>
+        <p><a class="btn" href="{{path('RichpolisBackendBundle_publicaciones')}}">Publicaciones &raquo;</a></p>
+    </div><!--/span-->
+</div><!--/row-->
+<div class="row-fluid">
+    <div class="span4">
+        <h2>Publicidad</h2>
+        <p>Administrar la publicidad de la pagina. </p>
+        <p><a class="btn" href="{{path('RichpolisBackendBundle_publicidad')}}">Publicidad &raquo;</a></p>
+    </div><!--/span-->
+    <div class="span4">
+        <h2>Fans</h2>
+        <p>Administrar los fans y los clubs de fans. </p>
+        <p><a class="btn" href="{{path('RichpolisBackendBundle_usuarios')}}">Fans &raquo;</a></p>
+    </div><!--/span-->
+    <div class="span4">
+        <h2>Configuracion</h2>
+        <p>CConfiguraciones especiales de la pagina (aun no disponible). </p>
+        <p><a class="btn" href="#">No disponible &raquo;</a></p>
+    </div><!--/span-->
+</div><!--/row-->
+</div><!--/span-->
+{% endblock %}

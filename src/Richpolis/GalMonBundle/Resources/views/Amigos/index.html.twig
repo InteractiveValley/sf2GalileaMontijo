@@ -1,0 +1,82 @@
+{% extends 'RichpolisGalMonBundle::layout.html.twig' %}
+
+{% block navigation %}
+<nav>
+    <ul class="navigation nav nav-pills">
+        <li><a href="{{path('RichpolisGalMonBundle_homepage')}}"><i class="icon-home"></i>Home</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_noticias')}}">Noticias</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_trayectoria')}}">Trayectoria</a></li>
+        <li class="active"><a href="{{path('RichpolisGalMonBundle_amigos')}}">Amigos</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_contacto')}}">Contacto</a></li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block body %}
+<section id="noticias">
+    <h1 class="color-azul-1">Fotos de amigos</h1>
+    <article class="container-fluid" style="text-align: center; margin-left: 20px;">
+        <ul class="thumbnails">
+            <li class="span3">
+              <div class="img-polaroid">
+                <img src="http://placehold.it/145x145" alt="">
+                <h3>Thumbnail label</h3>
+                <p>Thumbnail caption...</p>
+              </div>
+            </li>
+            <li class="span3">
+              <div class="img-polaroid">
+                <img src="http://placehold.it/145x145" alt="">
+                <h3>Thumbnail label</h3>
+                <p>Thumbnail caption...</p>
+              </div>
+            </li>
+            <li class="span3">
+              <div class="img-polaroid">
+                <img src="http://placehold.it/145x145" alt="">
+                <h3>Thumbnail label</h3>
+                <p>Thumbnail caption...</p>
+              </div>
+            </li>
+            <li class="span3">
+              <div class="img-polaroid">
+                <img src="http://placehold.it/145x145" alt="">
+                <h3>Thumbnail label</h3>
+                <p>Thumbnail caption...</p>
+              </div>
+            </li>
+            <li class="span3">
+              <div class="img-polaroid">
+                <img src="http://placehold.it/145x145" alt="">
+                <h3>Thumbnail label</h3>
+                <p>Thumbnail caption...</p>
+              </div>
+            </li>
+            <li class="span3">
+              <div class="img-polaroid">
+                <img src="http://placehold.it/145x145" alt="">
+                <h3>Thumbnail label</h3>
+                <p>Thumbnail caption...</p>
+              </div>
+            </li>
+            <li class="span3">
+              <div class="img-polaroid">
+                <img src="http://placehold.it/145x145" alt="">
+                <h3>Thumbnail label</h3>
+                <p>Thumbnail caption...</p>
+              </div>
+            </li>
+        </ul>
+    </article>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="#">Prev</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">Next</a></li>
+        </ul>
+    </div>
+</section>
+{% endblock %}				

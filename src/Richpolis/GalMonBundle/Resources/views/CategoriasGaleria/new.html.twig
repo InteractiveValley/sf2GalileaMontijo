@@ -1,0 +1,25 @@
+{% extends "RichpolisBackendBundle::backend.html.twig" %}
+
+{% block menu_horizontal %}
+    {% include 'RichpolisBackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'galerias'} %}
+{% endblock %}
+
+{% block body %}
+<h1>CategoriasGaleria</h1>
+
+<form action="{{ path('categorias_galeria_create') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p style="margin-top: 10px;">
+        <ul class="record_actions">
+            <li style=" list-style: none; display: inline;">
+                <button class="btn btn-primary" type="submit">Guardar</button>
+            </li>
+            <li style=" list-style: none;  display: inline;">
+                <a class="btn" href="{{ path('categorias_galeria') }}">
+                    Regresar
+                </a>
+            </li>
+        </ul>
+    </p>
+</form>
+{% endblock %}

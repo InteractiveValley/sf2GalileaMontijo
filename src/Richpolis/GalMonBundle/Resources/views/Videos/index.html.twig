@@ -1,0 +1,62 @@
+{% extends "RichpolisBackendBundle::backend.html.twig" %}
+
+{% block menu_horizontal %}
+    {% include 'RichpolisBackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'videos'} %}
+{% endblock %}
+
+
+{% block siderbar %}  
+<ul class="nav nav-list">
+              <li class="nav-header">Videos</li>
+              <li><a href="{{path('RichpolisBackendBundle_videos')}}">Galeria Videos</a></li>
+              </ul>
+{% endblock %}
+
+
+{% block body %}
+<h1>Videos</h1>
+
+<table class="table table-hover records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Video</th>
+            <th>Posicion</th>
+            <th>Activo</th>
+            <th>Creado</th>
+            <th>Actualizado</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('videos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.video }}</td>
+            <td>{{ entity.posicion }}</td>
+            <td>{{ entity.isactive }}</td>
+            <td>{% if entity.createdat %}{{ entity.createdat|date('d/m/Y H:i') }}{% endif%}</td>
+            <td>{% if entity.updatedat %}{{ entity.updatedat|date('d/m/Y H:i') }}{% endif%}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('videos_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('videos_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul class="btn-group">
+   <li>
+       <a class="btn btn-primary" href="{{ path('videos_new') }}">
+           Nuevo video
+       </a>
+   </li>
+</ul>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'RichpolisGalMonBundle::layout.html.twig' %}
+
+{% block navigation %}
+<nav>
+    <ul class="navigation nav nav-pills">
+        <li><a href="{{path('RichpolisGalMonBundle_homepage')}}"><i class="icon-home"></i>Home</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_noticias')}}">Noticias</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_trayectoria')}}">Trayectoria</a></li>
+        <li><a href="{{path('RichpolisGalMonBundle_amigos')}}">Amigos</a></li>
+        <li class="active"><a href="{{path('RichpolisGalMonBundle_contacto')}}">Contacto</a></li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block body %}
+<section class="contacto">
+    <h1 class="color-azul-1">Contacto</h1>
+    <article class="container-fluid">
+        <h2 class="noticia-titulo">Datos para contratacion</h2>
+        <div class="noticia-body row-fluid">
+            <div class="noticia-imagen img-polaroid span4">
+                <img src="http://placehold.it/350x270" alt="">
+            </div>
+            <div class="span8 justificar">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+            
+        </div>        
+    </article>
+    <div class="clearfix"></div>
+    <article class="container-fluid" style="margin-left: 30px;">
+            {% if app.session.hasFlash('noticia') %}
+            <div class="alert alert-success row-fluid">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ app.session.flash('noticia') }}
+            </div>
+            {% endif %}
+            <div class="row-fluid">
+            <form action="{{ path('RichpolisGalMonBundle_contacto') }}" method="post" {{ form_enctype(form) }} class="contacto form-horizontal span5 offset3">
+                {{ form_errors(form) }}
+                <div class="control-group">
+                    {{ form_label(form.name, 'Nombre', { 'attr': {'class': 'control-label'} }) }}
+                    <div class="controls">
+                      {{ form_widget(form.name, { 'attr': {'placeholder': 'Nombre'} }) }}
+                    </div>
+                </div>    
+                <div class="control-group">
+                    {{ form_label(form.email, 'Email', { 'attr': {'class': 'control-label'} }) }}
+                    <div class="controls">
+                      {{ form_widget(form.email, { 'attr': {'placeholder': 'Email','type':'email'} }) }}
+                    </div>
+                </div>
+                <div class="control-group">
+                    {{ form_label(form.subject, 'Asunto', { 'attr': {'class': 'control-label'} }) }}
+                    <div class="controls">
+                      {{ form_widget(form.subject, { 'attr': {'placeholder': 'Asunto'} }) }}
+                    </div>
+                </div>
+                <div class="control-group">
+                    {{ form_label(form.body, 'Mensaje', { 'attr': {'class': 'control-label'} }) }}
+                    <div class="controls">
+                      {{ form_widget(form.body, { 'attr': {'placeholder': 'Mensaje','row':'6'} }) }}
+                    </div>
+                </div>    
+                
+                
+                {{ form_rest(form) }}
+                    
+                <div class="control-group">
+                    <div class="controls">
+                      <input class="btn btn-primary" type="submit" value="Enviar" />
+                        <input type="reset" class="btn" value="Limpiar" />
+                    </div>
+                </div>    
+                
+            </form>
+            </div>
+    </article>
+    <div class="clearfix"></div>
+</section>
+{% endblock %}				

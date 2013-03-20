@@ -1,0 +1,46 @@
+<div id="contenedor-loqueestoyviendo">
+    <div class="imagen-show" style="background-image: url(/images/demo/slide1.jpg); background-position: center center;">
+        <span>&nbsp;</span>
+    </div>
+    <div class="load-imagen" style="font-family: 'oswaldregular';font-size: 16pt; ">
+        <p style="padding-top: 15px;">
+        ¿Que estas viendo tú? 
+        <a href="#modalFormularioLoqueestoyviendo" role="button" data-toggle="modal" style="float: right; position: relative; top: -5px; right: 10px;">
+            Sube lo que estas viendo!
+        </a>
+        </p>        
+    </div>    
+    <div id="galeria-loqueestoyviendo" >
+        <img src="{{ asset('images/pagina/control_galeria.jpg') }}" class="galeria-control-izquierda" />
+        <div class="galeria-contenedor">
+            <ul id="galeria-lo-que-estoy-viendo" class="galeria">
+                <li class="galeria-item" style="background-image: url(/images/demo/slide1.jpg); background-position: center center;" onclick="loadImagenShowLoQueEstoyViendo('slide1.jpg');">
+                    <span> &nbsp;</span> 
+                </li>
+                <li class="galeria-item" style="background-image: url(/images/demo/slide2.jpg); background-position: center center;" onclick="loadImagenShowLoQueEstoyViendo('slide2.jpg');">
+                    <span> &nbsp;</span>
+                </li>
+                <li class="galeria-item" style="background-image: url(/images/demo/slide3.jpg); background-position: center center;" onclick="loadImagenShowLoQueEstoyViendo('slide3.jpg');">
+                    <span> &nbsp;</span>
+                </li>
+                <li class="galeria-item" style="background-image: url(/images/demo/slide4.jpg); background-position: center center;" onclick="loadImagenShowLoQueEstoyViendo('slide4.jpg');">
+                    <span> &nbsp;</span>
+                </li>
+                <li class="galeria-item" style="background-image: url(/images/demo/slide1.jpg); background-position: center center;" onclick="loadImagenShowLoQueEstoyViendo('slide1.jpg');">
+                    <span> &nbsp;</span>
+                </li>
+                <li class="galeria-item" style="background-image: url(/images/demo/slide2.jpg); background-position: center center;" onclick="loadImagenShowLoQueEstoyViendo('slide2.jpg');">
+                    <span> &nbsp;</span>
+                </li>
+                <li class="galeria-item" style="background-image: url(/images/demo/slide3.jpg); background-position: center center;" onclick="loadImagenShowLoQueEstoyViendo('slide3.jpg');">
+                    <span> &nbsp;</span>
+                </li>
+                <li class="galeria-item" style="background-image: url(/images/demo/slide4.jpg); background-position: center center;" onclick="loadImagenShowLoQueEstoyViendo('slide4.jpg');">
+                    <span> &nbsp;</span>
+                </li>
+            </ul>
+         </div>
+           <img src="{{ asset('images/pagina/control_galeria.jpg') }}" class="galeria-control-derecha"/>
+    </div>
+</div>
+    

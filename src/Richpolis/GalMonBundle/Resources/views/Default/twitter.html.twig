@@ -1,0 +1,38 @@
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+    <script>
+    new TWTR.Widget({
+         version: 2,
+         type: 'search',
+         search: '{{twitterName}}',
+            interval: 1000,
+            title: 'Twitter Feed',
+            subject: '{{twitterDescripcion}}',
+            width: 'auto',
+            height: 450,
+            theme: {
+              shell: {
+                background: '#ffffff',
+                color: '#fafafa'
+              },
+              tweets: {
+                background: '#ffffff',
+                color: '#444444',
+                links: '#1985b5'
+              }
+            },
+            features: {
+              scrollbar: false,
+              loop: true,
+              live: true,
+              hashtags: true,
+              timestamp: true,
+              avatars: true,
+              toptweets: true,
+              behavior: 'default'
+            }
+          }).render().start();
+
+    </script>
+<div id="twitter-feed"> 
+	
+</div>

@@ -1,0 +1,54 @@
+{% extends "RichpolisBackendBundle::backend.html.twig" %}
+
+{% block menu_horizontal %}
+    {% include 'RichpolisBackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'usuarios'} %}
+{% endblock %}
+
+
+{% block body %}
+<h1>Usuarios</h1>
+
+<table class="table table-hover records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Activo</th>
+            <th>Creado</th>
+            <th>Actualizado</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('usuarios_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.nombre }}</td>
+            <td>{{ entity.username }}</td>
+            <td>{{ entity.isactive | isActive | raw }}</td>
+            <td>{% if entity.createdat %}{{ entity.createdat|date('d/m/Y H:i') }}{% endif%}</td>
+            <td>{% if entity.updatedat %}{{ entity.updatedat|date('d/m/Y H:i') }}{% endif%}</td>
+            <td>
+                <ul class="nav">
+                    <li>
+                        <a class="btn btn-mini"  href="{{ path('usuarios_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a class="btn btn-mini"  href="{{ path('usuarios_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul class="btn-group">
+   <li>
+       <a class="btn btn-primary" href="{{ path('usuarios_new') }}">
+           Nuevo usuario
+       </a>
+   </li>
+</ul>
+{% endblock %}
