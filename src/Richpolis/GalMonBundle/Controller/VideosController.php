@@ -27,11 +27,19 @@ class VideosController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('RichpolisGalMonBundle:Videos')
-                       ->getVideosActivas(true);
+        $query = $em->getRepository('RichpolisGalMonBundle:Videos')
+                       ->getQueryVideosActivas(true);
+        
+        $paginator = $this->get('knp_paginator');
+        
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            10
+        );
 
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination,
         );
     }
 
@@ -68,6 +76,14 @@ class VideosController extends Controller
     public function newAction()
     {
         $entity = new Videos();
+        $max=$this->getDoctrine()->getRepository('RichpolisGalMonBundle:Videos')->getMaxPosicion();
+            
+        if(!is_null($max)){
+            $entity->setPosicion($max+1);
+        }else{
+            $entity->setPosicion(1);
+        }
+        
         $form   = $this->createForm(new VideosType(), $entity);
 
         return array(

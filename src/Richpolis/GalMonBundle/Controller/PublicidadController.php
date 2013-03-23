@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\GalMonBundle\Entity\Publicidad;
 use Richpolis\GalMonBundle\Form\PublicidadType;
 
+
 /**
  * Publicidad controller.
  *
@@ -38,13 +39,21 @@ class PublicidadController extends Controller
         if(!isset($filters['publicidad']))
             $filters['publicidad']=Publicidad::$NIVEL1;
 
-        $entities = $em->getRepository('RichpolisGalMonBundle:Publicidad')
-                            ->getPublicidadPorTipoYActivas($filters['publicidad'],true);
+        $query = $em->getRepository('RichpolisGalMonBundle:Publicidad')
+                            ->getQueryPublicidadPorTipoYActivas($filters['publicidad'],true);
+        
+        $paginator = $this->get('knp_paginator');
+        
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            10
+        );
 
         return array(
-            'entities' => $entities,
-            'tipos'  => Publicidad::getArrayTipoPublicidad(),
-            'tipo_publicidad'=> $filters['publicidad'],
+            'tipos'             => Publicidad::getArrayTipoPublicidad(),
+            'tipo_publicidad'   => $filters['publicidad'],
+            'pagination' => $pagination,
         );
     }
 
@@ -58,7 +67,7 @@ class PublicidadController extends Controller
         $filters = $this->getFilters();
         
         if(isset($filters['publicidad'])){
-            return $this->forward('RichpolisGalMonBundle:Publicidad:index');
+            return $this->redirect($this->generateUrl('publicidad'));
         }else{
             return $this->render('RichpolisGalMonBundle:Publicidad:select.html.twig', array(
                 'tipos'  => Publicidad::getArrayTipoPublicidad(),
@@ -77,10 +86,10 @@ class PublicidadController extends Controller
         if($tipo){
             $filters['publicidad']=$tipo;
             $this->get('session')->set('filters',$filters);
-            return $this->forward('RichpolisGalMonBundle:Publicidad:index');    
+            return $this->redirect($this->generateUrl('publicidad'));   
         }else{
             if(isset($filters['publicidad'])){
-                return $this->forward('RichpolisGalMonBundle:Publicidad:index');
+                return $this->redirect($this->generateUrl('publicidad'));
             }else{
                 return $this->render('RichpolisGalMonBundle:Publicidad:select.html.twig', array(
                     'tipos'  => Publicidad::getArrayTipoPublicidad(),

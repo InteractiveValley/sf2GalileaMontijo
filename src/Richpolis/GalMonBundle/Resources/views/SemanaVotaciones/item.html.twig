@@ -1,11 +1,12 @@
-<h6>{{ entity.tituloCorto }}</h6>
+<li style=" float: left; margin-right: 5px; list-style: none;" id="registro-{{entity.id}}" class="galeria-item-li">        
+<h5>{{ entity.tituloCorto }}</h5>
 <img id="image-{{entity.id}}" 
      entity="{{entity.id}}" 
      src="{{ entity.thumbnailWebPath}}" 
      class="thumbnail image-sorteable" 
      title="{{entity.titulo}}" 
      descripcion="{{ entity.titulo }}" 
-     url="{{ path('galerias_edit',{ 'id' : entity.id })}}"/>
+     url="{{ path('votaciones_edit',{ 'id' : entity.id })}}"/>
 <p>
     <button type="button"
             data-target="#editarFormModal" 
@@ -19,7 +20,7 @@
             data-target="#confirmarActivarFormModal" 
             class="btn activar-item" 
             data-toggle="modal" 
-            onclick="javascript:activar('{{entity.id}}','{{path('galerias_activar',{'id':entity.id})}}')">
+            onclick="javascript:activar('{{entity.id}}','{{path('votaciones_activar',{'id':entity.id})}}')">
         <i class="icon-thumbs-up"></i>
     </button>
     {% endif %}    
@@ -28,7 +29,8 @@
             data-target="#confirmarFormModal" 
             class="btn eliminar-item" 
             data-toggle="modal" 
-            onclick="javascript:eliminar('{{entity.id}}','{{ path('galerias_delete_registro',{'id': entity.id})}}')">
+            onclick="javascript:eliminar('{{entity.id}}','{{ path('votaciones_delete_registro',{'id': entity.id})}}')">
         <i class="icon-remove"></i>
     </button>
 </p>
+</li><!--/span-->

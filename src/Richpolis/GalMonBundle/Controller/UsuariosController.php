@@ -11,6 +11,7 @@ use Richpolis\GalMonBundle\Entity\Usuarios;
 use Richpolis\GalMonBundle\Form\UsuariosType;
 
 
+
 /**
  * Usuarios controller.
  *
@@ -28,11 +29,19 @@ class UsuariosController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('RichpolisGalMonBundle:Usuarios')
-                       ->getUsuariosActivas(true);
+        $query = $em->getRepository('RichpolisGalMonBundle:Usuarios')
+                       ->getQueryUsuariosActivas(true);
+        
+        $paginator = $this->get('knp_paginator');
+        
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            10
+        );
 
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination,
         );
     }
 

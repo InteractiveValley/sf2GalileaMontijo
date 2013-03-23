@@ -24,10 +24,10 @@ class VideosRepository extends EntityRepository
     }
     
     public function getQueryVideosActivas($todas=false){
-        $query=$this->createQueryBuilder('u')
-                    ->orderBy('u.posicion', 'DESC');
+        $query=$this->createQueryBuilder('v')
+                    ->orderBy('v.posicion', 'ASC');
         if(!$todas){
-            $query->where('u.isActive=:active')
+            $query->andwhere('v.isActive=:active')
                   ->setParameter('active', true);
         }
         return $query->getQuery();

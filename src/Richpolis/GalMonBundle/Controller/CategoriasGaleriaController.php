@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\GalMonBundle\Entity\CategoriasGaleria;
 use Richpolis\GalMonBundle\Form\CategoriasGaleriaType;
 
+
 /**
  * CategoriasGaleria controller.
  *
@@ -39,13 +40,23 @@ class CategoriasGaleriaController extends Controller
         if(!isset($filters['categorias']))
             $filters['categorias']=CategoriasGaleria::$LO_QUE_ESTOY_VIENDO;
 
-        $entities = $em->getRepository('RichpolisGalMonBundle:CategoriasGaleria')
-                            ->getCategoriasPorTipoYActivas($filters['categorias'],true);
+        $query = $em->getRepository('RichpolisGalMonBundle:CategoriasGaleria')
+                            ->getQueryCategoriasPorTipoYActivas($filters['categorias'],true);
+        
+        $paginator = $this->get('knp_paginator');
+        
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            10
+        );
+
+
         
         return array(
-            'entities' => $entities,
-            'tipos'    => CategoriasGaleria::getArrayTipoCategorias(),
-            'tipo_categoria'=> $filters['categorias'],
+            'tipos'         =>  CategoriasGaleria::getArrayTipoCategorias(),
+            'tipo_categoria'=>  $filters['categorias'],
+            'pagination' => $pagination,
         );
     }
     
@@ -59,7 +70,7 @@ class CategoriasGaleriaController extends Controller
         $filters = $this->getFilters();
         
         if(isset($filters['categorias'])){
-            return $this->forward('RichpolisGalMonBundle:CategoriasGaleria:index');
+            return $this->redirect($this->generateUrl('categorias_galeria'));
         }else{
             return $this->render('RichpolisGalMonBundle:CategoriasGaleria:select.html.twig', array(
                 'tipos'  => CategoriasGaleria::getArrayTipoCategorias(),
@@ -78,10 +89,10 @@ class CategoriasGaleriaController extends Controller
         if($tipo){
             $filters['categorias']=$tipo;
             $this->get('session')->set('filters',$filters);
-            return $this->forward('RichpolisGalMonBundle:CategoriasGaleria:index');
+            return $this->redirect($this->generateUrl('categorias_galeria'));
         }else{
             if(isset($filters['categorias'])){
-                return $this->forward('RichpolisGalMonBundle:CategoriasGaleria:index');
+                return $this->redirect($this->generateUrl('categorias_galeria'));
             }else{
                 return $this->render('RichpolisGalMonBundle:CategoriasGaleria:select.html.twig', array(
                     'tipos'  => CategoriasGaleria::getArrayTipoCategorias(),

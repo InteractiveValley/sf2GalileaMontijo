@@ -12,7 +12,7 @@ class VotacionesType extends AbstractType
     {
         $builder
             ->add('titulo')
-            ->add('file','file')
+            ->add('file','file',array("label"=>"Imagen"))
             ->add('thumbnail','hidden')
             ->add('posicion','hidden')
             ->add('votacion','integer')

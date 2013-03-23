@@ -6,7 +6,15 @@
         Purpose of the stylesheet follows.
 */
 
-.galeria-item-li{
+/*.galeria-item-li{
     width: 155px;
     height: 235px; 
+}*/
+
+.gallery li { float: left; width:100px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; list-style-type: none; }
+.gallery li h5 { margin: 0 0 0.4em; cursor: move; font-size: small; font-weight: normal; }
+.gallery li img {  max-width: 133px; cursor: move; }
+
+.pagination ul li a{
+    color: black;
 }

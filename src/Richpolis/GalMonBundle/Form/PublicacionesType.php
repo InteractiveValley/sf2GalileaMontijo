@@ -19,7 +19,7 @@ class PublicacionesType extends AbstractType
             ->add('file','file',array(
                 'label'=>'Imagen',
                 ))
-            ->add('link_video','url',array('label'=>'Link de Video','required'=>false))
+            ->add('linkVideo','url',array('label'=>'Link de Video','required'=>false))
             ->add('posicion','hidden')
             ->add('tipoPublicacion','choice',array(
                 'label'=>'Tipo',

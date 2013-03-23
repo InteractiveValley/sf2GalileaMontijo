@@ -26,7 +26,7 @@
 {% block body %}
 <h1>Nuevo registro de semana</h1>
 
-<form action="{{ path('semanas_create') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('semana_votaciones_create') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <p style="margin-top: 10px;">
         <ul class="record_actions">
@@ -41,5 +41,9 @@
         </ul>
     </p>
 </form>
-
+<script>
+$(document).ready(function(){
+   $('.datepicker').datepicker({ dateFormat: "dd-mm-yy" }); 
+});    
+</script>
 {% endblock %}

@@ -25,13 +25,22 @@ class FansRepository extends EntityRepository
     
        
     public function getQueryFansActivas($todas=false){
-        $query=$this->createQueryBuilder('f')
-                    ->orderBy('f.posicion', 'DESC');
+        $em=$this->getEntityManager();
         if(!$todas){
-            $query->where('f.isActive=:active')
-                  ->setParameter('active', true);
+            $query=$em->createQuery('
+                SELECT f 
+                FROM RichpolisGalMonBundle:Fans f 
+                WHERE f.isActive=:active 
+                ORDER BY f.nombre, f.createdAt ASC
+           ')->setParameter('active', true);
+        }else{
+            $query=$em->createQuery('
+                SELECT f 
+                FROM RichpolisGalMonBundle:Fans f 
+                ORDER BY f.nombre, f.createdAt ASC
+           ');
         }
-        return $query->getQuery();
+        return $query;
     }
     
     public function getFansActivas($todas=false){

@@ -42,5 +42,27 @@
         </ul>
     </p>
 </form>
-
+<script>
+$(document).ready(function(){
+   
+   $( "#richpolis_galmonbundle_publicidadtype_activedAt" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 1,
+        dateFormat: "dd-mm-yy",
+        onClose: function( selectedDate ) {
+            $( "#richpolis_galmonbundle_publicidadtype_inativedAt" ).datepicker( "option", "minDate", selectedDate );
+        }
+    });
+    $( "#richpolis_galmonbundle_publicidadtype_inativedAt" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 1,
+        dateFormat: "dd-mm-yy",
+        onClose: function( selectedDate ) {
+            $( "#richpolis_galmonbundle_publicidadtype_activedAt" ).datepicker( "option", "maxDate", selectedDate );
+        }
+    });
+});    
+</script>
 {% endblock %}

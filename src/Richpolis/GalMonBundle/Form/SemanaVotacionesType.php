@@ -11,8 +11,13 @@ class SemanaVotacionesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('semana')
-            ->add('tema','genemu_tinymce',array('label'=>'Tema'))
+            ->add('semana','date',array(
+                'widget'    => 'single_text',
+                'format'    => 'dd-MM-yyyy',
+                'label'     => 'Semana',
+                'attr'      =>  array('class'=>'datepicker')
+                ))
+            ->add('tema','text',array('label'=>'Tema'))
             ->add('posicion','hidden')
             ->add('isActive',null,array('label'=>'Activo?'))
         ;

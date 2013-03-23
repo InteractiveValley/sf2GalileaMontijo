@@ -1,11 +1,11 @@
-#galery { float: left; width: 87%; min-height: 12em; }
-* html #galery { height: 12em; } /* IE6 */
-.galery.custom-state-active { background: #eee; }
-.galery li { float: left; width:100px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; list-style-type: none; }
-.galery li h5 { margin: 0 0 0.4em; cursor: move; font-size: small; font-weight: normal; }
-.galery li a { float: right; }
-.galery li a.ui-icon-zoomin { float: left; }
-.galery li img {  max-width: 133px; cursor: move; }
+#gallery { float: left; width: 87%; min-height: 12em; }
+* html #gallery { height: 12em; } /* IE6 */
+.gallery.custom-state-active { background: #eee; }
+.gallery li { float: left; width:100px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; list-style-type: none; }
+.gallery li h5 { margin: 0 0 0.4em; cursor: move; font-size: small; font-weight: normal; }
+.gallery li a { float: right; }
+.gallery li a.ui-icon-zoomin { float: left; }
+.gallery li img {  max-width: 133px; cursor: move; }
 #trash { float: right; width: 10%; height: 200px; padding: 1%;}
 #production { float: right; width: 10%; height: 200px; padding: 1%;}
 * html #trash { height: 18em; } /* IE6 */
@@ -14,13 +14,13 @@
 #production h4 { line-height: 16px; margin: 0 0 0.4em; }
 #trash h4 .ui-icon { float: left; }
 #production h4 .ui-icon { float: left; }
-#trash .galery h5, #production .galery h5 { display: none; }
-.galery li ul.galery-imagen-data {
+#trash .gallery h5, #production .gallery h5 { display: none; }
+.gallery li ul.gallery-imagen-data {
     font-size: xx-small;
     padding: 0;
     margin: 0 auto;
     text-align: left;
 }
-.galery li ul.galery-imagen-data li{
+.gallery li ul.gallery-imagen-data li{
     width: 180px;
 }

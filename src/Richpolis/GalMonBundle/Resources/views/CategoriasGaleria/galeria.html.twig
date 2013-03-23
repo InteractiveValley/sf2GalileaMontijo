@@ -4,9 +4,7 @@
 <div class="row-fluid">
     <ul id="gallery{% if gallery_status==false %}_para_aprobar{%endif%}">
     {% for entity in entities %}
-        <li style=" float: left; margin-right: 5px; list-style: none;" id="registro-{{entity.id}}" class="galeria-item-li">        
-            {% include "RichpolisGalMonBundle:CategoriasGaleria:item.html.twig" with { 'entity': entity } %}
-        </li><!--/span-->
+         {% include "RichpolisGalMonBundle:CategoriasGaleria:item.html.twig" with { 'entity': entity } %}   
     {% else %}
         Sin registros
     {% endfor %}

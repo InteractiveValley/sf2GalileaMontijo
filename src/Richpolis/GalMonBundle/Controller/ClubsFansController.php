@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\GalMonBundle\Entity\ClubsFans;
 use Richpolis\GalMonBundle\Form\ClubsFansType;
 
+
 /**
  * ClubsFans controller.
  *
@@ -27,11 +28,19 @@ class ClubsFansController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('RichpolisGalMonBundle:ClubsFans')
-                       ->getClubsFansActivas(true);
+        $query = $em->getRepository('RichpolisGalMonBundle:ClubsFans')
+                       ->getQueryClubsFansActivas(true);
+        
+        $paginator = $this->get('knp_paginator');
+        
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            10
+        );
 
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination,
         );
     }
 

@@ -33,8 +33,8 @@ class SemanaVotacionesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('RichpolisGalMonBundle:SemanaVotaciones')
-                       ->getSemanasActivas(true);
+        $query = $em->getRepository('RichpolisGalMonBundle:SemanaVotaciones')
+                       ->getQuerySemanasActivas(true);
 
         $filters = $this->getFilters();
 
@@ -45,10 +45,18 @@ class SemanaVotacionesController extends Controller
         }else{
             $semana=$em->getRepository('RichpolisGalMonBundle:SemanaVotaciones')->getSemanaConGaleriaPorId($filters['semanas']);
         }
+        
+        $paginator = $this->get('knp_paginator');
+        
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            10
+        );
             
         return array(
-            'entities' => $entities,
             'semana_actual' => $semana,
+            'pagination' => $pagination,
         );
     }
 
@@ -61,11 +69,14 @@ class SemanaVotacionesController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
-
+        
         $semana_actual = $em->getRepository('RichpolisGalMonBundle:SemanaVotaciones')
+                               ->getSemanaActual();
+            
+        $semana = $em->getRepository('RichpolisGalMonBundle:SemanaVotaciones')
                                ->getSemanaConGaleriaPorId($id);
         
-        if (!$semana_actual) {
+        if (!$semana_actual && !$semana) {
             throw $this->createNotFoundException('Unable to find SemanaVotaciones entity.');
         }
 
@@ -75,11 +86,22 @@ class SemanaVotacionesController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $semana_actual,
-            'semanas'     => $semanas,
-            'delete_form' => $deleteForm->createView(),
+            'entity'        => $semana,
+            'semana_actual' => $semana_actual,
+            'semanas'       => $semanas,
+            'delete_form'   => $deleteForm->createView(),
 
         );
+    }
+    
+    public function semanaActualAction()
+    {
+        $semana_actual=$this->getDoctrine()->getRepository('RichpolisGalMonBundle:SemanaVotaciones')
+                ->getSemanaActual();
+        if(!$semana_actual)
+            return $this->formard($this->generateUrl('semana_votaciones_show',array('id'=>$semana_actual->getId())));
+        else
+            return $this->redirect($this->generateUrl('semana_votaciones'));
     }
 
     /**

@@ -81,7 +81,7 @@ class Votaciones
     /**
      * @var \Fans
      *
-     * @ORM\ManyToOne(targetEntity="Fans")
+     * @ORM\ManyToOne(targetEntity="Fans", inversedBy="votaciones")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="fan_id", referencedColumnName="id")
      * })
@@ -89,9 +89,9 @@ class Votaciones
     private $fan;
 
     /**
-     * @var \CategoriasGaleriaVotaciones
+     * @var \SemanaVotaciones
      *
-     * @ORM\ManyToOne(targetEntity="CategoriasGaleriaVotaciones")
+     * @ORM\ManyToOne(targetEntity="SemanaVotaciones", inversedBy="votaciones")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="semana_id", referencedColumnName="id")
      * })
@@ -320,10 +320,10 @@ class Votaciones
     /**
      * Set semana
      *
-     * @param \Richpolis\GalMonBundle\Entity\CategoriasGaleriaVotaciones $semana
+     * @param \Richpolis\GalMonBundle\Entity\SemanaVotaciones $semana
      * @return Votaciones
      */
-    public function setSemana(\Richpolis\GalMonBundle\Entity\CategoriasGaleriaVotaciones $semana = null)
+    public function setSemana(\Richpolis\GalMonBundle\Entity\SemanaVotaciones $semana = null)
     {
         $this->semana = $semana;
     
@@ -333,7 +333,7 @@ class Votaciones
     /**
      * Get semana
      *
-     * @return \Richpolis\GalMonBundle\Entity\CategoriasGaleriaVotaciones 
+     * @return \Richpolis\GalMonBundle\Entity\SemanaVotaciones 
      */
     public function getSemana()
     {

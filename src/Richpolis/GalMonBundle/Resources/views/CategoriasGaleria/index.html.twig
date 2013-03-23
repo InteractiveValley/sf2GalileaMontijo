@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block body %}
-<h1>Galerias{% tipos[tipo_categoria] %}</h1>
+<h1>Galerias {{ tipos[tipo_categoria] }}</h1>
 
 <table class="table table-hover records_list">
     <thead>
@@ -42,7 +42,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for entity in entities %}
+    {% for entity in pagination %}
             <tr>
                 <td><a href="{{ path('categorias_galeria_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.categoria }}</td>
@@ -65,12 +65,18 @@
     {% endfor %}
         </tbody>
     </table>
-
-    <ul class="btn-group">
-        <li>
-            <a class="btn btn-primary" href="{{ path('categorias_galeria_new',{'tipo': tipo_categoria }) }}">
-                Nueva categoria
-            </a>
-        </li>
-    </ul>
+    <div class="row">
+        <div class="span4">    
+            <ul class="btn-group">
+                <li>
+                    <a class="btn btn-primary" href="{{ path('categorias_galeria_new',{'tipo': tipo_categoria }) }}">
+                        Nueva categoria
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="span4">
+            <div class="navigation"> {{ knp_pagination_render(pagination) }} </div>
+        </div>   
+    </div>
 {% endblock %}

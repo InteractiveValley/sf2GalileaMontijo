@@ -10,6 +10,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\GalMonBundle\Entity\Publicaciones;
 use Richpolis\GalMonBundle\Form\PublicacionesType;
 
+
+
+
+
+
 /**
  * Publicaciones controller.
  *
@@ -22,11 +27,11 @@ class PublicacionesController extends Controller
         $filters=$this->get('session')->get('filters', array());
         return $filters;
     }
-
+    
     /**
      * Lists all Publicaciones entities.
-     *
      * @Route("/", name="publicaciones")
+     * 
      * @Template()
      */
     public function indexAction()
@@ -38,16 +43,24 @@ class PublicacionesController extends Controller
         if(!isset($filters['publicaciones']))
             $filters['publicaciones']=Publicaciones::$NOTICIAS;
 
-        $entities = $em->getRepository('RichpolisGalMonBundle:Publicaciones')
-                            ->getPublicacionesPorTipoYActivas($filters['publicaciones'],true);
+        $query = $em->getRepository('RichpolisGalMonBundle:Publicaciones')
+                            ->getQueryPublicacionesPorTipoYActivas($filters['publicaciones'],true);
+        
+        $paginator = $this->get('knp_paginator');
+        
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            10
+        );
 
         return array(
-            'entities' => $entities,
             'tipos'  => Publicaciones::getArrayTipoPublicaciones(),
             'tipo_publicacion'=> $filters['publicaciones'],
+            'pagination' => $pagination,
         );
     }
-
+    
     /**
      * Seleccionar un tipo de categoria.
      *
@@ -58,7 +71,7 @@ class PublicacionesController extends Controller
         $filters = $this->getFilters();
         
         if(isset($filters['publicaciones'])){
-            return $this->forward('RichpolisGalMonBundle:Publicaciones:index');
+            return $this->redirect($this->generateUrl('publicaciones'));
         }else{
             return $this->render('RichpolisGalMonBundle:Publicaciones:select.html.twig', array(
                 'tipos'  => Publicaciones::getArrayTipoPublicaciones(),
@@ -77,10 +90,10 @@ class PublicacionesController extends Controller
         if($tipo){
             $filters['publicaciones']=$tipo;
             $this->get('session')->set('filters',$filters);
-            return $this->forward('RichpolisGalMonBundle:Publicaciones:index');
+            return $this->redirect($this->generateUrl('publicaciones'));
         }else{
             if(isset($filters['publicaciones'])){
-                return $this->forward('RichpolisGalMonBundle:Publicaciones:index');
+                return $this->redirect($this->generateUrl('publicaciones'));
             }else{
                 return $this->render('RichpolisGalMonBundle:Publicaciones:select.html.twig', array(
                     'tipos'  => Publicaciones::getArrayTipoPublicaciones(),
@@ -95,7 +108,7 @@ class PublicacionesController extends Controller
         $filters = $this->getFilters();
         $filters['publicaciones']=Publicaciones::$NOTICIAS;
         $this->get('session')->set('filters',$filters);
-        return $this->forward('RichpolisGalMonBundle:Publicaciones:index');
+        return $this->redirect($this->generateUrl('publicaciones'));
     }
 
 
@@ -104,7 +117,7 @@ class PublicacionesController extends Controller
         $filters = $this->getFilters();
         $filters['publicaciones']=Publicaciones::$TRAYECTORIA;
         $this->get('session')->set('filters',$filters);
-        return $this->forward('RichpolisGalMonBundle:Publicaciones:index');
+        return $this->redirect($this->generateUrl('publicaciones'));
     }
 
 
@@ -113,7 +126,7 @@ class PublicacionesController extends Controller
         $filters = $this->getFilters();
         $filters['publicaciones']=Publicaciones::$CONFIGURACION;
         $this->get('session')->set('filters',$filters);
-        return $this->forward('RichpolisGalMonBundle:Publicaciones:index');
+        return $this->redirect($this->generateUrl('publicaciones'));
     }
 
     /**

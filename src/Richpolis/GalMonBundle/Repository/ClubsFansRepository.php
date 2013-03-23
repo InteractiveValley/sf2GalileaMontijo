@@ -25,13 +25,22 @@ class ClubsFansRepository extends EntityRepository
     
       
     public function getQueryClubsFansActivas($todas=false){
-        $query=$this->createQueryBuilder('c')
-                    ->orderBy('c.posicion', 'DESC');
+        $em=$this->getEntityManager();
         if(!$todas){
-            $query->where('c.isActive=:active')
-                  ->setParameter('active', true);
+            $query=$em->createQuery('
+                SELECT f 
+                FROM RichpolisGalMonBundle:ClubsFans f 
+                WHERE f.isActive=:active 
+                ORDER BY f.club, f.presidente,f.createdAt ASC
+           ')->setParameter('active', true);
+        }else{
+            $query=$em->createQuery('
+                SELECT f 
+                FROM RichpolisGalMonBundle:ClubsFans f 
+                ORDER BY f.club, f.presidente,f.createdAt ASC
+           ');
         }
-        return $query->getQuery();
+        return $query;
     }
     
     public function getClubsFansActivas($todas=false){

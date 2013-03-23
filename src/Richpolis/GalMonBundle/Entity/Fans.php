@@ -56,7 +56,7 @@ class Fans
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
     private $isActive;
-
+    
     /**
      * @var \DateTime
      *

@@ -74,7 +74,7 @@ class Galerias
     /**
      * @var \CategoriasGaleria
      *
-     * @ORM\ManyToOne(targetEntity="CategoriasGaleria")
+     * @ORM\ManyToOne(targetEntity="CategoriasGaleria", inversedBy="galerias")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
      * })
@@ -84,7 +84,7 @@ class Galerias
     /**
      * @var \Fans
      *
-     * @ORM\ManyToOne(targetEntity="Fans")
+     * @ORM\ManyToOne(targetEntity="Fans", inversedBy="galerias")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="fan_id", referencedColumnName="id")
      * })

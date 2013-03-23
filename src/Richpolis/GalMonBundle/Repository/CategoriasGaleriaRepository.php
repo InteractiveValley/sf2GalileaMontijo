@@ -41,8 +41,9 @@ class CategoriasGaleriaRepository extends EntityRepository
                     AND p.isActive = :active 
                     ORDER BY g.posicion DESC
                 ')->setParameters(array('tipo'=> $tipoCategoria,'active'=>true));
-        $categoria=$query->getResult();
-        return $categoria[0];
+        $categorias= $query->getResult();
+        return $categorias[0];
+        
     }
     
     public function getCategoriaConGaleriaPorId($categoria_id,$active=true){
@@ -55,8 +56,7 @@ class CategoriasGaleriaRepository extends EntityRepository
                     AND p.isActive = :active 
                     ORDER BY g.posicion DESC
                 ')->setParameters(array('categoria'=> $categoria_id,'active'=>true));
-        $categoria=$query->getResult();
-        return $categoria[0];
+        return $query->getSingleResult();
     }
     public function getCategoriasPorTipoCategoria($tipoCategoria,$categoria_actual=0,$active=true){
         $em=$this->getEntityManager();

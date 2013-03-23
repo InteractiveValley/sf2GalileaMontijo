@@ -9,9 +9,11 @@
     </parameters>
     
     <services>
+        <!-- "isActive" twig.extension -->
         <service id="richpolis_gal_mon.twig.is_active_extension" class="%richpolis_gal_mon.isactive.extension.class%">
             <tag name="twig.extension" />
         </service>
+                
     </services>
     <!--
     <parameters>

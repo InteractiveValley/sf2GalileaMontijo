@@ -67,3 +67,21 @@ genemu_form:
         swf: /js/uploadify/uploadify.swf
 
 
+knp_paginator:
+    page_range: 5  # número de páginas que se muestran en el paginador
+
+    default_options:
+        # los siguientes tres parámetros permiten "traducir" el paginador
+        # puedes utilizar por ejemplo: 'pagina', 'ordenar' y 'direccion'
+        page_name:           page
+        sort_field_name:     sort
+        sort_direction_name: direction
+
+        # sólo incluir resultados diferentes (útil cuando haces consultas GROUP BY)
+        distinct: true
+
+    template:
+        # estas opciones configuran la plantilla utilizada para la paginación
+        # y para los controles que premiten reordenar los resultados
+        pagination: KnpPaginatorBundle:Pagination:sliding.html.twig
+        sortable:   KnpPaginatorBundle:Pagination:sortable_link.html.twig

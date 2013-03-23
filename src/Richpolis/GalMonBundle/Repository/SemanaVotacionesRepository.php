@@ -28,14 +28,12 @@ class SemanaVotacionesRepository extends EntityRepository {
             $em = $this->getEntityManager();    
         }
         $query = $em->createQuery('
-                    SELECT s FROM RichpolisGalMonBundle:SemanaVotaciones s
-                    LEFT JOIN s.votaciones v 
+                    SELECT s 
+                    FROM RichpolisGalMonBundle:SemanaVotaciones s
                     WHERE s.isActive = :active
-                    ORDER BY v.posicion ASC 
-                    LIMIT 1 
+                    ORDER BY s.posicion ASC
                 ')->setParameters(array('active' => true));
-        $semanas= $query->getResult();
-        return $semana[0];
+        return $query->getOneOrNullResult();
     }
 
     public function getSemanaConGaleriaPorId($semana) {
@@ -45,13 +43,10 @@ class SemanaVotacionesRepository extends EntityRepository {
             $query = $em->createQuery('
                     SELECT s 
                     FROM RichpolisGalMonBundle:SemanaVotaciones s 
-                    LEFT JOIN s.votaciones v 
                     WHERE s.id = :semana 
-                    ORDER BY v.posicion ASC 
-                    LIMIT 1 
+                    ORDER BY s.posicion ASC
                 ')->setParameters(array('semana' => $semana));
-            $semanas=$query->getResult();
-            return $semanas[0];
+            return $query->getOneOrNullResult();
         }else{
             return $this->getSemanaActual($em);
         }

@@ -204,7 +204,9 @@ $(function() {
         <a href="#">{{value}}</a>
     </li>
     {% endif %}
-    {% endfor %}    
+    {% endfor %}
+    <li class="nav-header">Papelera</li>
+    <li id="papelera"><img src="{{asset('images/trash_grande.png')}}"/></li>
     <li class="nav-header">Archivos</li>
     {% for cat in categorias %}
     <li class="categoria-tipo" categoria="{{cat.id}}">
@@ -213,8 +215,7 @@ $(function() {
     {% else %}
      <li>Sin mas galerias</li>   
     {% endfor %}
-    <li class="nav-header">Papelera</li>
-    <li id="papelera"><img src="{{asset('images/trash_grande.png')}}"/></li>
+    
 </ul>
 {% endblock %}
 

@@ -26,7 +26,7 @@
 {% block body %}
 <h1>Editar semana "{{entity.tema}}"</h1>
 
-<form id="formPrincipal" action="{{ path('semanas_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+<form id="formPrincipal" action="{{ path('semana_votaciones_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
     {{ form_widget(edit_form) }}
 </form>
 
@@ -52,4 +52,9 @@
         </ul>
 
     </p>
+<script>
+$(document).ready(function(){
+   $('.datepicker').datepicker({ dateFormat: "dd-mm-yy" }); 
+});    
+</script>
 {% endblock %}

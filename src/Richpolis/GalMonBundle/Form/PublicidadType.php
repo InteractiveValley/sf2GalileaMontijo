@@ -19,21 +19,23 @@ class PublicidadType extends AbstractType
             ->add('link','url')
             ->add('posicion','hidden')
             ->add('tipoPublicidad','choice',array(
-                'label'=>'Tipo',
-                'empty_value'=>false,
-                'choices'=>Publicidad::getArrayTipoPublicidad(),
+                'label'         =>  'Tipo',
+                'empty_value'   =>  false,
+                'choices'       =>  Publicidad::getArrayTipoPublicidad(),
                 'preferred_choices'=>Publicidad::getPreferedTipoPublicidad(),
-                'read_only'=>true,
+                'read_only'     =>  true,
                 ))
-            ->add('activedAt','genemu_jquerydate',array(
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-                'label'=> 'Desde',
+            ->add('activedAt','date',array(
+                'widget'    => 'single_text',
+                'format'    => 'dd-MM-yyyy',
+                'label'     => 'Desde',
+                'attr'      =>  array('class'=>'datepicker')
                 ))
-            ->add('inativedAt','genemu_jquerydate',array(
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-                'label'=> 'Hasta'
+            ->add('inativedAt','date',array(
+                'widget'    => 'single_text',
+                'format'    => 'dd-MM-yyyy',
+                'label'     => 'Hasta',
+                'attr'      =>  array('class'=>'datepicker')
                 ))
             ->add('isActive',null,array('label'=>'Activo?'))
         ;

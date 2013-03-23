@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\GalMonBundle\Entity\Fans;
 use Richpolis\GalMonBundle\Form\FansType;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 
 /**
  * Fans controller.
@@ -27,11 +29,19 @@ class FansController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('RichpolisGalMonBundle:Fans')
-                       ->getFansActivas(true);
+        $query = $em->getRepository('RichpolisGalMonBundle:Fans')
+                       ->getQueryFansActivas(true);
+        
+        $paginator = $this->get('knp_paginator');
+        
+        $pagination = $paginator->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            10
+        );
 
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination,
         );
     }
 

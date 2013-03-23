@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<h1>SemanaVotaciones</h1>
+<h1>Semana Votaciones</h1>
 
 <table class="table table-hover records_list">
     <thead>
@@ -21,22 +21,22 @@
         </tr>
     </thead>
     <tbody>
-    {% for entity in entities %}
+    {% for entity in pagination %}
         <tr>
-            <td><a href="{{ path('semanas_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td><a href="{{ path('semana_votaciones_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
             <td>{% if entity.semana %}{{ entity.semana|date('d/m/Y H:i') }}{% endif%}</td>
-            <td>{{ entity.tema }}</td>
+            <td>{{ entity.tema | raw }}</td>
             <td>{{ entity.posicion }}</td>
-            <td>{{ entity.isactive }}</td>
+            <td>{{ entity.isactive | isActive | raw }}</td>
             <td>{% if entity.createdat %}{{ entity.createdat|date('d/m/Y H:i') }}{% endif%}</td>
             <td>{% if entity.updatedat %}{{ entity.updatedat|date('d/m/Y H:i') }}{% endif%}</td>
             <td>
-                <ul>
+                <ul class="nav">
                     <li>
-                        <a href="{{ path('semanas_show', { 'id': entity.id }) }}">show</a>
+                        <a class="btn btn-mini" href="{{ path('semana_votaciones_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('semanas_edit', { 'id': entity.id }) }}">edit</a>
+                        <a class="btn btn-mini" href="{{ path('semana_votaciones_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
             </td>
@@ -44,11 +44,20 @@
     {% endfor %}
     </tbody>
 </table>
-<ul class="btn-group">
-   <li>
-       <a class="btn btn-primary" href="{{ path('semana_votaciones_new') }}">
-           Nueva semana
-       </a>
-   </li>
-</ul>
+
+<div class="row">
+        <div class="span4">    
+            <ul class="btn-group">
+                <li>
+                    <a class="btn btn-primary" href="{{ path('semana_votaciones_new') }}">
+                        Nueva semana
+                    </a>
+                </li>
+             </ul>
+        </div>
+        <div class="span4">
+            <div class="navigation"> {{ knp_pagination_render(pagination) }} </div>
+        </div>   
+</div>
+
 {% endblock %}

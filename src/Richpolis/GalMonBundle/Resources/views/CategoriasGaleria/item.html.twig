@@ -1,4 +1,5 @@
-<h6>{{ entity.tituloCorto }}</h6>
+<li style=" float: left; margin-right: 5px; list-style: none;" id="registro-{{entity.id}}" class="galeria-item-li">        
+<h5>{{ entity.tituloCorto }}</h5>
 <img id="image-{{entity.id}}" 
      entity="{{entity.id}}" 
      src="{{ entity.thumbnailWebPath}}" 
@@ -32,3 +33,4 @@
         <i class="icon-remove"></i>
     </button>
 </p>
+</li>

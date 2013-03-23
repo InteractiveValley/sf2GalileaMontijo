@@ -4,6 +4,8 @@
 {{ parent() }}
 <link rel="stylesheet" href="{{ asset('css/fileuploader.css') }}" type="text/css" media="all" />
 <link rel="stylesheet" href="{{ asset('css/prettyPhoto.css') }}" type="text/css" media="all" />
+
+
 {% endblock %}
 
 {% block javascripts %}
@@ -28,10 +30,10 @@
     var uploader = new qq.FileUploader({
             element: document.getElementById('upload'),
             template: '{% include "RichpolisBackendBundle:Default:templateUploader.html.twig" %}',
-            action: '{{ path('galerias_upload',{ 'categoria': entity.id }) }}',
-            params: { categoria: '{{ entity.id }}' },
+            action: '{{ path('votaciones_upload',{ 'semana': entity.id }) }}',
+            params: { semana: '{{ entity.id }}' },
             onComplete: function(id, file, responseJson){
-                    $.get("{{ path('galerias_galeria',{'categoria':entity.id,'isActive': true })}}",
+                    $.get("{{ path('votaciones_galeria',{'semana':entity.id,'isActive': true })}}",
                     {},
                     function(data)
                     {
@@ -83,7 +85,7 @@
     }
     function updateRegistroGaleria(Id,Title,Description){
         $('#image-loader').show();
-        var url='{{path('galerias_update_registro')}}';
+        var url='{{path('votaciones_update_registro')}}';
         $.post(url,
             {'id':Id,'titulo':Title,'contenido':Description},
             function(data){
@@ -160,8 +162,8 @@
             update: function(){
                 $('#image-loader').show();
                 var order = $('#gallery').sortable('serialize');
-                $.post('{{path('categorias_galeria_ordenar')}}?'+order,
-                 {'categoria':'{{entity.id}}'},
+                $.post('{{path('semana_votaciones_ordenar')}}?'+order,
+                 {'semana':'{{entity.id}}'},
                  function(data){
                    $('#image-loader').hide();
                 });
@@ -193,28 +195,35 @@ $(function() {
 
 {% block siderbar %}  
 <ul class="nav nav-list">
-    <li class="nav-header">Galerias</li>
-    {% for key,value in tipos %}
-    {% if key != entity.tipocategoria %}    
-    <li class="tipo-categoria" tipo="{{key}}">
-        <a href="{{path('categorias_galeria_show_tipo',{'tipo': key })}}">{{value}}</a>
-    </li>
+    <li class="nav-header">Semana Actual</li>
+    {% if entity.id != semana_actual.id %}    
+        <li class="semana-tipo" semana="{{ semana.id }}">
+            <a href="{{path('semana_votaciones_show',{'id':semana_actual.id})}}">{{semana_actual.tema | raw }}</a>
+        </li>
     {% else %}
-    <li class="tipo-categoria active" tipo="{{key}}">
-        <a href="#">{{value}}</a>
-    </li>
+        <li class="semana-tipo active" semana="{{semana_actual.id}}">
+            <a href="">{{ semana_actual.tema | raw }}</a>
+        </li>
     {% endif %}
-    {% endfor %}    
-    <li class="nav-header">Archivos</li>
-    {% for cat in categorias %}
-    <li class="categoria-tipo" categoria="{{cat.id}}">
-        <a href="{{path('categorias_galeria_show',{'id':cat.id})}}">{{cat.categoria}}</a>
-    </li>
-    {% else %}
-     <li>Sin mas galerias</li>   
-    {% endfor %}
+    
     <li class="nav-header">Papelera</li>
     <li id="papelera"><img src="{{asset('images/trash_grande.png')}}"/></li>
+    
+    <li class="nav-header">Semanas anteriores</li>
+    {% for semana in semanas %}
+        {% if entity.id != semana.id %}    
+        <li class="semana-tipo" semana="{{ semana.id }}">
+            <a href="{{ path('semana_votaciones_show',{'id':semana.id}) }}">{{ semana.tema | raw }}</a>
+        </li>
+        {% else %}
+        <li class="semana-tipo active" semana="{{ semana.id }}">
+            <a href="">{{ semana.tema | raw }}</a>
+        </li>
+        {% endif %}
+    {% else %}
+        <li>Sin mas semanas</li>   
+    {% endfor %}
+    
 </ul>
 {% endblock %}
 
@@ -224,7 +233,7 @@ $(function() {
 
 
 {% block body %}
-<h1>Galeria: {{entity.stringtipocategoria}}</h1>
+<h1>Semana: {{entity.tema | raw }}</h1>
 <ul class="nav nav-tabs" id="tabCategoriasGaleria">
   <li class="active"><a href="#galeria">Imagenes</a></li>
   <li><a href="#aprobar_imagenes">Aprobar</a></li>
@@ -233,10 +242,10 @@ $(function() {
 <div class="tab-content">
     <div class="tab-pane  active" id="galeria">
        <div id="lista_imagenes" style=" min-height: 400px;">
-         {% render "RichpolisGalMonBundle:CategoriasGaleria:galeria" with {'categoria': entity.id, 'isActive': true } %}
+         {% render "RichpolisGalMonBundle:SemanaVotaciones:galeria" with {'semana': entity.id, 'isActive': true } %}
        </div>
        <div id="upload" style="margin: 30px 150px;">
-           <a href="{{path('galerias_new',{'categoria': entity.id })}}">
+           <a href="{{path('votaciones_new',{'semana': entity.id })}}">
                Agregar archivos
            </a>
        </div>
@@ -249,7 +258,7 @@ $(function() {
   </div>
   <div class="tab-pane" id="aprobar_imagenes">
       <div id="lista_imagenes_aprobar" style=" min-height: 400px;">
-          {% render "RichpolisGalMonBundle:CategoriasGaleria:galeria" with {'categoria': entity.id, 'isActive': false } %}
+          {% render "RichpolisGalMonBundle:SemanaVotaciones:galeria" with {'semana': entity.id, 'isActive': false } %}
       </div>
   </div>
   <div class="tab-pane" id="sistema">
@@ -258,12 +267,12 @@ $(function() {
                 <tr>
                     <th>Id</th>
                     <td>{{ entity.id }}</td>
-                    <th>Categoria</th>
-                    <td>{{ entity.categoria }}</td>
+                    <th>semana</th>
+                    <td>{{ entity.semana|date('d/m/Y') }}</td>
                 </tr>
                 <tr>
-                    <th>Tipo</th>
-                    <td>{{ entity.stringtipocategoria }}</td>
+                    <th>Tema</th>
+                    <td>{{ entity.tema | raw }}</td>
                     <th>Posicion</th>
                     <td>{{ entity.posicion }}</td>
                 </tr>
@@ -287,19 +296,19 @@ $(function() {
 
 <ul class="record_actions nav nav-pills">
         <li>
-            <button class="btn" onclick="location.href='{{ path('categorias_galeria') }}'">
+            <button class="btn" onclick="location.href='{{ path('semana_votaciones') }}'">
                 Regresar
             </button>
         </li>
         <li>&nbsp;</li>
         <li>
-            <button class="btn btn-success" onclick="location.href='{{ path('categorias_galeria_edit', { 'id': entity.id }) }}'">
+            <button class="btn btn-success" onclick="location.href='{{ path('semana_votaciones_edit', { 'id': entity.id }) }}'">
                 Editar
             </button>
         </li>
         <li>&nbsp;</li>
         <li>
-            <form action="{{ path('categorias_galeria_delete', { 'id': entity.id }) }}" method="post">
+            <form action="{{ path('semana_votaciones_delete', { 'id': entity.id }) }}" method="post">
                     {{ form_widget(delete_form) }}
                     <button class="btn btn-danger" type="submit">Eliminar</button>
             </form>

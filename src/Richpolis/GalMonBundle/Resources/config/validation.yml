@@ -1,0 +1,119 @@
+# src/Ens/JobeetBundle/Resources/config/validation.yml
+ 
+Richpolis\GalMonBundle\Entity\CategoriasGaleria:
+    properties:
+        categoria:
+            - NotBlank: ~
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.
+
+Richpolis\GalMonBundle\Entity\ClubsFans:
+    properties:
+        club:
+            - NotBlank: ~
+        presidente: 
+            - NotBlank: ~
+        direccion: 
+            - NotBlank: ~
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.    
+
+Richpolis\GalMonBundle\Entity\Fans:
+    properties:
+        nombre:
+            - NotBlank: ~
+        email: 
+            - NotBlank: ~
+            - Email: ~
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.
+
+Richpolis\GalMonBundle\Entity\Galerias:
+    properties:
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.
+
+Richpolis\GalMonBundle\Entity\Publicaciones:
+    properties:
+        titulo:
+            - NotBlank: ~
+        publicacion:
+            - NotBlank: ~
+        linkVideo:
+            - Url: ~    
+        file:
+            - Image: ~
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.
+                
+Richpolis\GalMonBundle\Entity\Publicidad:
+    properties:
+        file:
+            - File: ~
+        link:
+            - Url: ~    
+        activedAt:
+            - Date: ~
+        inativedAt:
+            - Date: ~
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.
+
+Richpolis\GalMonBundle\Entity\SemanaVotaciones:
+    properties:
+        semana:
+            - NotBlank: ~
+            - Date: ~
+        tema: 
+            - NotBlank: ~
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.
+
+Richpolis\GalMonBundle\Entity\Videos:
+    properties:
+        video:
+            - Url: ~    
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.
+
+Richpolis\GalMonBundle\Entity\Votaciones:
+    properties:
+        titulo:
+            - NotBlank: ~
+        file:
+            - Image: ~
+        votacion:
+            - Min: 0
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.
+                
+                
+Richpolis\GalMonBundle\Entity\Usuarios:
+    properties:
+        nombre:
+            - NotBlank: ~
+        email: 
+            - NotBlank: ~
+            - Email: ~
+        isActive:
+            - Type:
+                type: bool
+                message: El valor {{ value }} no es un tipo {{ type }}.

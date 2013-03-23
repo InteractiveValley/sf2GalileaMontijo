@@ -67,11 +67,28 @@ class VotacionesController extends Controller
     public function newAction()
     {
         $entity = new Votaciones();
+        
+        $semanaId=$this->getRequest()->query->get('semana',0);
+
+        $semana=$this->getDoctrine()->getRepository('RichpolisGalMonBundle:SemanaVotaciones')
+                                        ->getSemanaConGaleriaPorId($semanaId);
+
+        $max=$this->getDoctrine()->getRepository('RichpolisGalMonBundle:Votaciones')->getMaxPosicion();
+            
+        if(!is_null($max)){
+            $entity->setPosicion($max+1);
+        }else{
+            $entity->setPosicion(1);
+        }
+        
+        $entity->setSemana($semana);
+        
         $form   = $this->createForm(new VotacionesType(), $entity);
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'semana' => $semana,
         );
     }
 
@@ -93,7 +110,7 @@ class VotacionesController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('votaciones_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('semana_votaciones_show', array('id' => $entity->getSemana()->getId())));
         }
 
         return array(
@@ -117,7 +134,7 @@ class VotacionesController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Votaciones entity.');
         }
-
+        $semana=$entity->getSemana();
         $editForm = $this->createForm(new VotacionesType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
@@ -125,6 +142,7 @@ class VotacionesController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'semana'      => $semana,
         );
     }
 
@@ -153,7 +171,7 @@ class VotacionesController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('votaciones_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('semana_votaciones_show', array('id' => $entity->getSemana()->getId())));
         }
 
         return array(
@@ -173,20 +191,23 @@ class VotacionesController extends Controller
     {
         $form = $this->createDeleteForm($id);
         $form->bind($request);
-
+        $semana=null;
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('RichpolisGalMonBundle:Votaciones')->find($id);
-
+            
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Votaciones entity.');
             }
-
+            $semana=$entity->getSemana();
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('votaciones'));
+        if(!$semana)
+            return $this->redirect($this->generateUrl('semana_votaciones_show',array('id'=>$semana->getId())));
+        else
+            return $this->redirect($this->generateUrl('semana_votaciones'));
     }
 
     private function createDeleteForm($id)
@@ -248,20 +269,21 @@ class VotacionesController extends Controller
      * @Route("/mostrar/registros", name="votaciones_galeria")
      * @Template("RichpolisGalMonBundl:SemanaVotaciones:galeria.html.twig")
      */
-    public function galeriaAction($categoria,$isActive){
+    public function galeriaAction($categoria,$active){
         $em = $this->getDoctrine()->getEntityManager();
-        $entities=$em->getRepository('RichpolisGalMonBundle:Votaciones')->getGaleriaPorCategoriaYStatus($categoria_id,$is_active);
+        $entities=$em->getRepository('RichpolisGalMonBundle:Votaciones')
+                ->getGaleriaPorCategoriaYStatus($categoria,$active);
         
         return array(
             'entities'          =>  $entities,
-            'gallery_status'    =>  $isActive
+            'gallery_status'    =>  $active
         );
     }
     
     /**
      * actualizar datos del registro.
      *
-     * @Route("/actualizar/registro/galeria", name="galerias_update_registro")
+     * @Route("/actualizar/registro/galeria", name="votaciones_update_registro")
      */
     public function updateRegistroGaleriaAction(){
         $request=$this->getRequest();
@@ -273,11 +295,11 @@ class VotacionesController extends Controller
             $titulo=$request->query->get('titulo');
         }
         $em = $this->getDoctrine()->getEntityManager();
-        $registro = $em->getRepository('RichpolisGalMonBundle:Galerias')->find($id);
+        $registro = $em->getRepository('RichpolisGalMonBundle:Votaciones')->find($id);
         $registro->setTitulo($titulo);
         $em->flush();
         
-        $template=$this->renderView('RichpolisGalMonBundle:CategoriasGaleria:item.html.twig', array(
+        $template=$this->renderView('RichpolisGalMonBundle:SemanaVotaciones:item.html.twig', array(
             'entity'=>$registro,
         ));
         if($request->isXmlHttpRequest()){
@@ -285,19 +307,19 @@ class VotacionesController extends Controller
             return $response;
         }else{
             
-            return $this->redirect($this->generateUrl('galerias'));
+            return $this->redirect($this->generateUrl('votaciones'));
         }
     }
     
     /**
      * actualizar datos del registro.
      *
-     * @Route("/eliminar/registro/galeria/{id}", name="galerias_delete_registro")
+     * @Route("/eliminar/registro/galeria/{id}", name="votaciones_delete_registro")
      */
     public function deleteRegistroGaleriaAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $entity = $em->getRepository('RichpolisGalMonBundle:Galerias')->find($id);
+        $entity = $em->getRepository('RichpolisGalMonBundle:Votaciones')->find($id);
         $request = $this->getRequest();
         $result=array();
 
@@ -315,19 +337,19 @@ class VotacionesController extends Controller
             return $response;
         }else{
             
-            return $this->redirect($this->generateUrl('galerias'));
+            return $this->redirect($this->generateUrl('votaciones'));
         }
     }
     
     /**
      * actualizar datos del registro.
      *
-     * @Route("/activar/registro/galeria/{id}", name="galerias_activar")
+     * @Route("/activar/registro/galeria/{id}", name="votaciones_activar")
      */
     public function activarAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $entity = $em->getRepository('RichpolisGalMonBundle:Galerias')->find($id);
+        $entity = $em->getRepository('RichpolisGalMonBundle:Votaciones')->find($id);
         $request = $this->getRequest();
         $result=array();
 
@@ -339,7 +361,7 @@ class VotacionesController extends Controller
             $result['ok']="ok";
             $result['id']=$id;
         }
-        $template=$this->renderView('RichpolisGalMonBundle:CategoriasGaleria:item.html.twig', array(
+        $template=$this->renderView('RichpolisGalMonBundle:SemanaVotaciones:item.html.twig', array(
             'entity'=>$entity,
         ));
 
@@ -350,7 +372,7 @@ class VotacionesController extends Controller
             return $response;
         }else{
             
-            return $this->redirect($this->generateUrl('galerias'));
+            return $this->redirect($this->generateUrl('votaciones'));
         }
     }
 }

@@ -210,7 +210,7 @@ class GaleriasController extends Controller
     {
         $form = $this->createDeleteForm($id);
         $form->bind($request);
-
+        $categoria=null;
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('RichpolisGalMonBundle:Galerias')->find($id);
@@ -224,7 +224,7 @@ class GaleriasController extends Controller
             $em->flush();
         }
 
-        if($categoria>0)
+        if(!$categoria)
             return $this->redirect($this->generateUrl('categorias_galeria_show',array('id'=>$categoria->getId())));
         else
             return $this->redirect($this->generateUrl('categorias_galeria'));

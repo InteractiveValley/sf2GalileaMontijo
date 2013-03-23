@@ -5,7 +5,7 @@ namespace Richpolis\GalMonBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CategoriasGaleriaVotaciones
+ * SemanaVotaciones
  *
  * @ORM\Table(name="categorias_galeria_votaciones")
  * @ORM\Entity(repositoryClass="Richpolis\GalMonBundle\Repository\SemanaVotacionesRepository")

@@ -81,7 +81,7 @@ class Votaciones
     /**
      * @var \Fans
      *
-     * @ORM\ManyToOne(targetEntity="Fans")
+     * @ORM\ManyToOne(targetEntity="Fans", inversedBy="votaciones")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="fan_id", referencedColumnName="id")
      * })
@@ -91,7 +91,7 @@ class Votaciones
     /**
      * @var \SemanaVotaciones
      *
-     * @ORM\ManyToOne(targetEntity="SemanaVotaciones")
+     * @ORM\ManyToOne(targetEntity="SemanaVotaciones", inversedBy="votaciones")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="semana_id", referencedColumnName="id")
      * })
