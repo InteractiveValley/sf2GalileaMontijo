@@ -1,0 +1,25 @@
+<div class="contenedor-decora-tu-pantalla">
+    <div style="position: absolute; top: 45%; right: 10px; z-index: 1000;" class="galeria-control-derecha control-decora-tu-pantalla" >
+        <img src="{{ asset('/bundles/richpolisgalmon/images/arrow_right.png') }}" />
+    </div>
+    <div style="position: absolute; top: 45%; left: 10px; z-index: 1000;" class="galeria-control-izquierda control-decora-tu-pantalla">
+        <img src="{{ asset('/bundles/richpolisgalmon/images/arrow_left.png') }}" />
+    </div>
+    <ul id="galeria-decora-tu-pantalla">
+        {% for galeria in galerias %}
+        <li class="galeria-item" style="position: relative;">
+            <img src="{{galeria.thumbnailWebPath}}" alt="{{galeria.titulo}}">
+            <div style="position: absolute; top: 90%; right: 10px; bottom: 10px; z-index: 1000; background-color: black; color: white;">
+                <a href="{{galeria.webPath}}" class="link-descargar" target="_blank"> Descargar!</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<script>
+$(document).ready(function(){
+    $(".control-decora-tu-pantalla").click(function(){
+       $(".link-descargar").fadeOut("fast").delay("2000").fadeIn("fast"); 
+    });
+});
+</script>

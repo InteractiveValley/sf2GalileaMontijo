@@ -213,4 +213,56 @@ class VideosController extends Controller
             ->getForm()
         ;
     }
+    
+    /**
+     * Subir registro de Videos.
+     *
+     * @Route("/{id}/up", name="videos_up")
+     * @Method("GET")
+     */
+    public function upAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $registroUp = $em->getRepository('RichpolisGalMonBundle:Videos')->find($id);
+        
+        if ($registroUp) {
+            $registroDown=$em->getRepository('RichpolisGalMonBundle:Videos')->getRegistroUpOrDown($registroUp->getPosicion(),true);
+            if ($registroDown) {
+                $posicion=$registroUp->getPosicion();
+                $registroUp->setPosicion($registroDown->getPosicion());
+                $registroDown->setPosicion($posicion);
+                $em->flush();
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('videos',array(
+            'page'=>$this->getRequest()->query->get('page', 1)
+        )));
+    }
+    
+    /**
+     * Subir registro de Videos.
+     *
+     * @Route("/{id}/down", name="videos_down")
+     * @Method("GET")
+     */
+    public function downAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $registroDown = $em->getRepository('RichpolisGalMonBundle:Videos')->find($id);
+        
+        if ($registroDown) {
+            $registroUp=$em->getRepository('RichpolisGalMonBundle:Videos')->getRegistroUpOrDown($registroDown->getPosicion(),false);
+            if ($registroUp) {
+                $posicion=$registroUp->getPosicion();
+                $registroUp->setPosicion($registroDown->getPosicion());
+                $registroDown->setPosicion($posicion);
+                $em->flush();
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('videos',array(
+            'page'=>$this->getRequest()->query->get('page', 1)
+        )));
+    }
 }

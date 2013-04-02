@@ -2,7 +2,7 @@
      <img src="/images/loader.gif"/>
 </div>
 <div class="row-fluid">
-    <ul id="gallery{% if gallery_status==false %}_para_aprobar{%endif%}">
+    <ul id="gallery{% if gallery_status==false %}_para_aprobar{%endif%}" class="gallery">
     {% for entity in entities %}
          {% include "RichpolisGalMonBundle:CategoriasGaleria:item.html.twig" with { 'entity': entity } %}   
     {% else %}

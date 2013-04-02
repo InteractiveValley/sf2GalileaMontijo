@@ -26,6 +26,7 @@
 {% endblock %}
 
 {% block body %}
+
 <h1>Publicidad</h1>
 
 <table class="table table-hover records_list">
@@ -54,10 +55,14 @@
             <td>
                 <ul class="nav">
                     <li>
-                        <a class="btn btn-mini" href="{{ path('publicidad_show', { 'id': entity.id }) }}">show</a>
+                        <a class="btn btn-mini" href="{{ path('publicidad_show', { 'id': entity.id }) }}" title="Mostrar registro">
+                            <i class="icon-eye-open"></i>
+                        </a>
                     </li>
                     <li>
-                        <a class="btn btn-mini" href="{{ path('publicidad_edit', { 'id': entity.id }) }}">edit</a>
+                        <a class="btn btn-mini" href="{{ path('publicidad_edit', { 'id': entity.id }) }}" title="Editar registro">
+                            <i class="icon-edit"></i>
+                        </a>
                     </li>
                 </ul>
             </td>
@@ -69,7 +74,7 @@
         <div class="span4">    
             <ul class="btn-group">
                 <li>
-                    <a class="btn btn-primary" href="{{ path('publicidad_new') }}">
+                    <a class="btn btn-primary" href="{{ path('publicidad_new',{'tipo': tipo_publicidad}) }}">
                         Nueva publicidad
                     </a>
                 </li>

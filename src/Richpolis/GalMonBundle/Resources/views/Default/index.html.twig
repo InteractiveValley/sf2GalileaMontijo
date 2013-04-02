@@ -5,60 +5,55 @@
 <link rel="stylesheet" href="{{ asset('css/prettyPhoto.css') }}" type="text/css" media="all" />
 {% endblock %}
 
-
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('js/jquery.prettyPhoto.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/sfrichpolis.js') }}" type="text/javascript"></script>
+{% endblock %}
 
 {% block body %}
 <section id="home-section-1">
     <article id="video-semana">
-        <h1 style="font-family: 'oswaldregular'; font-size: 22pt;" class="color-azul-1">Video de la semana!</h1>
-        <div style="text-align: center;">
-            <a href="http://www.youtube.com/watch?v=4ndoBRuFkMs&feature=share&list=PLkO5GeqaOpGaDXIR9FfXmiT_FDpIff8Z9" rel="prettyPhoto" title="">
-                <img style=" margin-top: 20px;" src="{{ asset('bundles/richpolisgalmon/images/reproducir.png') }}" alt="YouTube" />
-            </a>
-        </div>        
+          {% render 'RichpolisGalMonBundle:Default:videoSemana' %}   
     </article>
     <article id="twitter-feed">
-        <h1 style="font-family: 'oswaldregular';font-size: 12pt; line-height: 20px;"  class="color-azul-2" style="font-size: 12px;">
-            <ul style=" list-style: none; padding: 0px; float: right;">
-                <li style=" display: inline; float: right;">
-                    <img src="{{ asset('bundles/richpolisgalmon/images/facebook.png') }}"/>
-                </li>
-                <li style=" display: inline; float: right;">
-                    <img src="{{ asset('bundles/richpolisgalmon/images/twitter.png') }}"/>
-                </li>
-            </ul>
-            <span>@GalileaMontijo<br/>facebook.com/GalileamOficial</span>
-
-        </h1>
         {% include 'RichpolisGalMonBundle:Default:twitter.html.twig' with {'twitterName': 'GalileaMontijo','twitterDescripcion':'Galilea Montijo'} %}
     </article>    
     <article id="lo-que-estoy-viendo">
         <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-3">Lo que estoy viendo!</h1>
-        {% include 'RichpolisGalMonBundle:Default:loqueestoyviendo.html.twig' %}
+        {% render 'RichpolisGalMonBundle:Default:loQueEstoyViendo' %}
     </article>
     <article id="media-kit-1" class="media-kit">
-        <div style="width: 100%; text-align: center; margin-top: 30px;">
-            <img src="http://placehold.it/460x130" alt=""> 
-        </div>
+        {% for publicidad in publicidades %}
+            {% if publicidad.tipoPublicidad == 1%}
+            <div style="width: 100%; text-align: center; margin-top: 30px;">
+                {{ publicidad.archivoView | raw }} 
+            </div>
+            {% endif %}
+        {% endfor %}    
     </article>    
 </section>
 <section id="home-section-2">
     <article id="media-kit-2" class="media-kit">
         <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-2">Definitivamente esto me encanto!</h1>
-        <div style="width: 100%; text-align: center; margin-top: 20px;"> 
-            <img src="http://placehold.it/460x260" alt=""> 
-            <p style="margin-top: 20px; text-align: left; margin-left: 20px;">Thumbnail caption right here...</p> 
-        </div>
+        {% for publicidad in publicidades %}
+            {% if publicidad.tipoPublicidad == 2%}
+            <div style="width: 100%; text-align: center; margin-top: 20px;"> 
+                {{ publicidad.archivoView | raw }} 
+                <p style="margin-top: 20px; text-align: left; margin-left: 20px;">{{publicidad.link}}</p> 
+            </div>
+            {% endif %}
+        {% endfor %}
     </article>
     <article id="decora-tu-pantalla">
         <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-4">Decora tu pantalla!</h1>
-        {% include 'RichpolisGalMonBundle:Default:decoratupantalla.html.twig' %}
+        {% render 'RichpolisGalMonBundle:Default:decoraTuPantalla' %}
     </article>
 </section>
 <section id="home-section-3">
     <article id="galeria-oficial">
         <h1 style="font-family: 'oswaldregular'; font-size: 22pt;margin-bottom: 0px; text-align: left;" class="color-azul-2">Galeria oficial!</h1>
-        {% include 'RichpolisGalMonBundle:Default:galeriaoficial.html.twig' %}
+        {% render 'RichpolisGalMonBundle:Default:galeriaOficial' %}
     </article>
     <div style="clear: both;"></div>
     <article id="media-kit-3" class="media-kit">
@@ -78,7 +73,7 @@
 <section id="home-section-4">
     <h1 style="font-family: 'oswaldregular'; font-size: 22pt;"  class="color-azul-2" style="margin-bottom: 0px;">Tus fotos!</h1>
     <article id="tus-fotos">
-        {% include 'RichpolisGalMonBundle:Default:tusfotos.html.twig' %}
+        {% render 'RichpolisGalMonBundle:Default:tusFotos' %}
      </article>
 </section>
     <section id="home-section-5">
@@ -119,12 +114,9 @@
 
 {% endblock %}
 
-{% block javascripts %}
-{{ parent() }}
-        <script src="{{ asset('js/jquery.prettyPhoto.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('js/sfrichpolis.js') }}" type="text/javascript"></script>
-        <script>
 
+{% block javascript_adicional %}
+       <script>
         $(document).ready(function(){
             $.configPrettyPhoto();
             $(".galeria-control-derecha").css({"visibility":"hidden"});
@@ -171,7 +163,7 @@
 
         function loadImagenShowLoQueEstoyViendo(imagen){
             $(".imagen-show").fadeOut("fast",function(){
-                $(".imagen-show").css({"backgroundImage":"url(/images/demo/"+imagen+")"});
+                $(".imagen-show").css({"backgroundImage":"url("+imagen+")"});
                 $(".imagen-show").fadeIn("fast");
             });
         }
@@ -219,7 +211,7 @@
         }
 
 
-            </script>
+</script>
 
 {% endblock %}
 

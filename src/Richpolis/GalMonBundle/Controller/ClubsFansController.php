@@ -206,4 +206,56 @@ class ClubsFansController extends Controller
             ->getForm()
         ;
     }
+    
+    /**
+     * Subir registro de ClubsFans.
+     *
+     * @Route("/{id}/up", name="clubs_fans_up")
+     * @Method("GET")
+     */
+    public function upAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $registroUp = $em->getRepository('RichpolisGalMonBundle:ClubsFans')->find($id);
+        
+        if ($registroUp) {
+            $registroDown=$em->getRepository('RichpolisGalMonBundle:ClubsFans')->getRegistroUpOrDown($registroUp->getPosicion(),true);
+            if ($registroDown) {
+                $posicion=$registroUp->getPosicion();
+                $registroUp->setPosicion($registroDown->getPosicion());
+                $registroDown->setPosicion($posicion);
+                $em->flush();
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('clubs_fans',array(
+            'page'=>$this->getRequest()->query->get('page', 1)
+        )));
+    }
+    
+    /**
+     * Subir registro de ClubsFans.
+     *
+     * @Route("/{id}/down", name="clubs_fans_down")
+     * @Method("GET")
+     */
+    public function downAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $registroDown = $em->getRepository('RichpolisGalMonBundle:ClubsFans')->find($id);
+        
+        if ($registroDown) {
+            $registroUp=$em->getRepository('RichpolisGalMonBundle:ClubsFans')->getRegistroUpOrDown($registroDown->getPosicion(),false);
+            if ($registroUp) {
+                $posicion=$registroUp->getPosicion();
+                $registroUp->setPosicion($registroDown->getPosicion());
+                $registroDown->setPosicion($posicion);
+                $em->flush();
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('clubs_fans',array(
+            'page'=>$this->getRequest()->query->get('page', 1)
+        )));
+    }
 }

@@ -15,7 +15,7 @@ class PublicidadRepository extends EntityRepository
     public function getMaxPosicion($tipo){
         $em=$this->getEntityManager();
         $query=$em->createQuery('
-            SELECT COUNT(p.posicion) as value 
+            SELECT MAX(p.posicion) as value 
             FROM RichpolisGalMonBundle:Publicidad p 
             WHERE p.tipoPublicidad=:tipo 
             ORDER BY p.posicion ASC
@@ -28,7 +28,7 @@ class PublicidadRepository extends EntityRepository
         $query=$this->createQueryBuilder('p')
                     ->where('p.tipoPublicidad=:tipo')
                     ->setParameter('tipo', $tipo)
-                    ->orderBy('p.posicion', 'DESC');
+                    ->orderBy('p.activedAt', 'DESC');
         if(!$todas){
             $query->andWhere('p.isActive=:active')
                   ->setParameter('active', true);
@@ -40,5 +40,24 @@ class PublicidadRepository extends EntityRepository
         $query=$this->getQueryPublicidadPorTipoYActivas($tipo,$todas);
         return $query->getResult();
     }
+
     
+    public function getFechaInactivedAtMax(){
+        $query=$this->getEntityManager()->createQueryBuilder();
+        $query->select($query->expr()->Max('p.inativedAt'))
+              ->from('RichpolisGalMonBundle:Publicidad', 'p');
+        return $query->getQuery()->getSingleResult();
+    }
+    
+    
+    public function getPublicidadActuales(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('
+                    SELECT p 
+                    FROM RichpolisGalMonBundle:Publicidad p 
+                    GROUP BY p.tipoPublicidad 
+                    ORDER BY p.tipoPublicidad,p.posicion DESC 
+                ');
+        return $query->getResult();
+    }
 }

@@ -3,6 +3,7 @@
 namespace Richpolis\GalMonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Richpolis\GalMonBundle\Utils\Richsys;
 
 /**
  * Publicidad
@@ -98,14 +99,15 @@ class Publicidad
     static public $NIVEL4=4;
     static public $NIVEL5=5;
     static public $NIVEL6=6;
+    static public $NIVEL7=7;
     
     static private $sCategorias=array(
         1=>'Nivel 1 460x130',
         2=>'Nivel 2 460x260',
-        3=>'Nivel 3 679x118',
-        4=>'Nivel 4 313x118',
-        5=>'Nivel 5 679x118',
-        6=>'Nivel 6 313x118'
+        3=>'Nivel 3 680x120',
+        4=>'Nivel 4 325x120',
+        5=>'Nivel 5 680x120',
+        6=>'Nivel 6 325x120',
     );
 
     
@@ -399,7 +401,7 @@ class Publicidad
     public $file;
     
     /**
-    ** @ORM\PrePersist
+    * @ORM\PrePersist
     * @ORM\PreUpdate
     */
     public function preUpload()
@@ -423,7 +425,7 @@ class Publicidad
       // if there is an error when moving the file, an exception will
       // be automatically thrown by move(). This will properly prevent
       // the entity from being persisted to the database on error
-      $this->file->move($this->getUploadRootDir(), $this->file);
+      $this->file->move($this->getUploadRootDir(), $this->archivo);
 
       
       unset($this->file);
@@ -435,7 +437,14 @@ class Publicidad
     public function removeUpload()
     {
       if ($file = $this->getAbsolutePath()) {
-        unlink($file);
+        if(file_exists($file)){
+            unlink($file);
+        }
+      }
+      if($thumbnail=$this->getAbosluteThumbnailPath()){
+          if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
       }
     }
     
@@ -450,10 +459,108 @@ class Publicidad
         return __DIR__.'/../../../../web'.$this->getUploadDir();
     }
     
+    protected function getThumbnailRootDir()
+    {
+        return __DIR__.'/../../../../web'.$this->getUploadDir().'/thumbnails';
+    }
+        
     public function getWebPath()
     {
         return null === $this->archivo ? null : $this->getUploadDir().'/'.$this->archivo;
     }
 
+    public function getThumbnailWebPath()
+    {
+        switch(Richsys::getTipoArchivo($this->getArchivo())){
+            case Richsys::$TIPO_ARCHIVO_IMAGEN:
+                if(!$this->thumbnail){
+                    if(!file_exists($this->getAbosluteThumbnailPath()) && file_exists($this->getAbsolutePath())){
+                        $this->crearThumbnail();
+                    }
+                }
+                return null === $this->thumbnail ? null : $this->getUploadDir().'/thumbnails/'.$this->thumbnail;
+            break;
+            case Richsys::$TIPO_ARCHIVO_FLASH:
+                 
+            break;
+        }
+    }
     
+    public function getAbsolutePath()
+    {
+        return null === $this->archivo ? null : $this->getUploadRootDir().'/'.$this->archivo;
+    }
+    
+    public function getAbosluteThumbnailPath(){
+        return null === $this->thumbnail ? null : $this->getUploadRootDir().'/thumbnails/'.$this->thumbnail;
+    }
+    
+    
+    
+    /*
+     * Crea el thumbnail y lo guarda en un carpeta dentro del webPath thumbnails
+     * 
+     * @return void
+     */
+    private function crearThumbnail($width=145,$heigth=145){
+        $imagine= new \Imagine\Gd\Imagine();
+        $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+        $size=new \Imagine\Image\Box($width,$height);
+        $this->thumbnail=$this->imagen;
+        
+        $imagine->open($this->getAbsolutePath())
+                ->thumbnail($size, $mode)
+                ->save($this->getAbosluteThumbnailPath());
+        
+    }
+
+    public function getArchivoView(){
+        $opciones=array(
+            'tipo_archivo'  => Richsys::getTipoArchivo($this->getArchivo()),
+            'archivo'   =>  $this->getArchivo(),
+            'carpeta'   =>  'publicidad',
+            'width'     =>  $this->getWidth(),
+            'height'    =>  $this->getHeight(),
+        );
+        
+        return Richsys::getArchivoView($opciones);
+    }
+    public function getWidth(){
+        $resp=0;
+        switch($this->getTipoPublicidad()){
+            case self::$NIVEL1: //460x130
+            case self::$NIVEL2: //460x260
+                $resp=460;
+                break;
+            case self::$NIVEL3:
+            case self::$NIVEL5:    
+                //680x120
+                $resp=680;
+                break;
+            case self::$NIVEL4:
+            case self::$NIVEL6:
+                //325x120
+                $resp=325;
+                break;
+        }
+        return $resp;
+    }
+    public function getHeight(){
+        $resp=0;
+        switch($this->getTipoPublicidad()){
+            case self::$NIVEL1: //460x130
+                $resp=130;
+                break;
+            case self::$NIVEL2: //460x260
+                $resp=260;
+                break;
+            case self::$NIVEL3: //680x120
+            case self::$NIVEL4: //680x120   
+            case self::$NIVEL5: //325x120
+            case self::$NIVEL6: //325x120
+                $resp=120;
+                break;
+        }
+        return $resp;
+    }
 }

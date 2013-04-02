@@ -56,7 +56,7 @@ class Fans
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
     private $isActive;
-
+    
     /**
      * @var \DateTime
      *
@@ -70,6 +70,13 @@ class Fans
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_mostrar_datos", type="boolean", nullable=true)
+     */
+    private $isMostrarDatos;
     
     /**
      * @ORM\OneToMany(targetEntity="Galerias", mappedBy="fan")
@@ -213,6 +220,7 @@ class Fans
     {
         return $this->isActive;
     }
+    
 
     /**
      * Set createdAt

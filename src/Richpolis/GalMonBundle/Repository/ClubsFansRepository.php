@@ -15,7 +15,7 @@ class ClubsFansRepository extends EntityRepository
     public function getMaxPosicion(){
         $em=$this->getEntityManager();
         $query=$em->createQuery('
-            SELECT COUNT(cf.posicion) as value 
+            SELECT MAX(cf.posicion) as value 
             FROM RichpolisGalMonBundle:ClubsFans cf 
             ORDER BY cf.posicion ASC
             ');
@@ -46,5 +46,24 @@ class ClubsFansRepository extends EntityRepository
     public function getClubsFansActivas($todas=false){
         $query=$this->getQueryClubsFansActivas($todas);
         return $query->getResult();
+    }
+    
+    public function getRegistroUpOrDown($posicionRegistro,$up=true){
+        // $up = true, $up = false is down
+        if($up){
+            //up
+            $query=$this->createQueryBuilder('p')
+                    ->where('p.posicion>:posicion')
+                    ->setParameter('posicion', $posicionRegistro)
+                    ->orderBy('p.posicion', 'ASC');
+        }else{
+            //down
+            $query=$this->createQueryBuilder('p')
+                    ->where('p.posicion<:posicion')
+                    ->setParameter('posicion', $posicionRegistro)
+                    ->orderBy('p.posicion', 'ASC');
+        }
+        
+        return $query->getQuery()->setMaxResults(1)->getOneOrNullResult();
     }
 }

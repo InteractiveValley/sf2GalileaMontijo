@@ -1,38 +1,50 @@
+<h1 style="font-family: 'oswaldregular';font-size: 12pt; line-height: 20px;"  class="color-azul-2" style="font-size: 12px;">
+    <ul style=" list-style: none; padding: 0px; float: right;">
+        <li style=" display: inline; float: right;">
+            <img src="{{ asset('bundles/richpolisgalmon/images/facebook.png') }}"/>
+        </li>
+        <li style=" display: inline; float: right;">
+            <img src="{{ asset('bundles/richpolisgalmon/images/twitter.png') }}"/>
+        </li>
+    </ul>
+    <span>@GalileaMontijo<br/>facebook.com/GalileamOficial</span>
+
+</h1>
 <script src="http://widgets.twimg.com/j/2/widget.js"></script>
-    <script>
+<script>
     new TWTR.Widget({
-         version: 2,
-         type: 'search',
-         search: '{{twitterName}}',
-            interval: 1000,
-            title: 'Twitter Feed',
-            subject: '{{twitterDescripcion}}',
-            width: 'auto',
-            height: 450,
-            theme: {
-              shell: {
+        version: 2,
+        type: 'search',
+        search: '{{twitterName}}',
+        interval: 1000,
+        title: 'Twitter Feed',
+        subject: '{{twitterDescripcion}}',
+        width: 'auto',
+        height: 450,
+        theme: {
+            shell: {
                 background: '#ffffff',
                 color: '#fafafa'
-              },
-              tweets: {
+            },
+            tweets: {
                 background: '#ffffff',
                 color: '#444444',
                 links: '#1985b5'
-              }
-            },
-            features: {
-              scrollbar: false,
-              loop: true,
-              live: true,
-              hashtags: true,
-              timestamp: true,
-              avatars: true,
-              toptweets: true,
-              behavior: 'default'
             }
-          }).render().start();
+        },
+        features: {
+            scrollbar: false,
+            loop: true,
+            live: true,
+            hashtags: true,
+            timestamp: true,
+            avatars: true,
+            toptweets: true,
+            behavior: 'default'
+        }
+    }).render().start();
 
     </script>
-<div id="twitter-feed"> 
-	
-</div>
+    <div id="twitter-feed"> 
+
+    </div>

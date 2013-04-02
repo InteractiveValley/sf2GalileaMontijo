@@ -4,30 +4,11 @@
     </div>
     <div class="contenedor-secundario">
         <ul id="galeria-galeria-oficial">
+            {% for galeria in galerias %}
             <li class="galeria-item">
-                <img src="http://placehold.it/145x175" alt="">
+                <img src="{{galeria.thumbnailWebPath}}" alt="">
             </li>
-            <li class="galeria-item">
-                <img src="http://placehold.it/145x175" alt="">
-            </li>
-            <li class="galeria-item">
-                <img src="http://placehold.it/145x175" alt="">
-            </li>
-            <li class="galeria-item">
-                <img src="http://placehold.it/145x175" alt="">
-            </li>
-            <li class="galeria-item">
-                <img src="http://placehold.it/145x175" alt="">
-            </li>
-            <li class="galeria-item">
-                <img src="http://placehold.it/145x175" alt="">
-            </li>
-            <li class="galeria-item">
-                <img src="http://placehold.it/145x175" alt="">
-            </li>
-            <li class="galeria-item">
-                <img src="http://placehold.it/145x175" alt="">
-            </li>
+            {% endfor %}
         </ul>
     </div>
     <div style="position: absolute; top: 80px; left: 0px; z-index: 1000;" class="galeria-control-izquierda">

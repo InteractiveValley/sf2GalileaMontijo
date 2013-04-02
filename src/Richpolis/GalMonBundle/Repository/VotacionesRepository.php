@@ -15,7 +15,7 @@ class VotacionesRepository extends EntityRepository
     public function getMaxPosicion() {
         $em = $this->getEntityManager();
         $query = $em->createQuery('
-            SELECT COUNT(v.posicion) as value 
+            SELECT MAX(v.posicion) as value 
             FROM RichpolisGalMonBundle:Votaciones v 
             ORDER BY v.posicion ASC
             ');

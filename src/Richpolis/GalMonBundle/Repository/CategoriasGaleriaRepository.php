@@ -91,4 +91,15 @@ class CategoriasGaleriaRepository extends EntityRepository
         return $query->getResult();
     }
     
+    public function getCategoriasActuales(){
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('
+                    SELECT c 
+                    FROM RichpolisGalMonBundle:CategoriasGaleria c 
+                    LEFT JOIN c.galerias g 
+                    GROUP BY c.tipo_categoria 
+                    ORDER BY c.tipo_categoria,c.posicion DESC, g.posicion DESC 
+                ');
+        return $query->getResult();
+    }
 }

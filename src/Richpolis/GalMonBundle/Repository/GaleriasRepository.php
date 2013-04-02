@@ -16,7 +16,7 @@ class GaleriasRepository extends EntityRepository
     public function getMaxPosicion(){
         $em=$this->getEntityManager();
         $query=$em->createQuery('
-            SELECT COUNT(g.posicion) as value 
+            SELECT MAX(g.posicion) as value 
             FROM RichpolisGalMonBundle:Galerias g 
             ORDER BY g.posicion ASC
             ');

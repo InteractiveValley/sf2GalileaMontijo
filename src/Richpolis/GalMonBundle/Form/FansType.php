@@ -15,7 +15,9 @@ class FansType extends AbstractType
             ->add('twitter')
             ->add('facebook')
             ->add('email','email')
+            ->add('isMostrarDatos',null,array('label'=>'Mostrar Datos?'))    
             ->add('isActive',null,array('label'=>'Activo?'))
+                
         ;
     }
 

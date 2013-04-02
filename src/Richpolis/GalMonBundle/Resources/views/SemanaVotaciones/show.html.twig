@@ -90,7 +90,7 @@
             {'id':Id,'titulo':Title,'contenido':Description},
             function(data){
                  setTimeout(function(){
-                        $('#image-loader').slideUp();
+                        $('#image-loader').hide();
                  }, 1000);
                  $("#registro-"+Id).html(data);
                  aplicarGallerySorteable();

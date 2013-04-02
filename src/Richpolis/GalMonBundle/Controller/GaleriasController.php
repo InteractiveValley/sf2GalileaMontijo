@@ -394,4 +394,84 @@ class GaleriasController extends Controller
             return $this->redirect($this->generateUrl('galerias'));
         }
     }
+    
+    /**
+     * Cambiar de tipo de categoria.
+     *
+     * @Route("/cambiar/tipo/categoria", name="galerias_cambiar_tipo_categoria")
+     */
+    public function cambiarTipoCategoriaAction()
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $request = $this->getRequest();
+        $id=$request->query->get('id');
+        $tipo=$request->query->get('tipo');
+        $id=  str_replace('registro-', "", $id);
+        $entity=    $em->getRepository('RichpolisGalMonBundle:Galerias')->find($id);
+        $categoria= $em->getRepository('RichpolisGalMonBundle:CategoriasGaleria')->getCategoriaActualPorTipoCategoria($tipo);
+        $posicion=  $em->getRepository('RichpolisGalMonBundle:Galerias')->getMaxPosicion();
+        $result=array();
+
+        if(!$entity){
+            $result['ok']="false";
+        }elseif(!$categoria){
+            $result['ok']="false";
+        }else{
+            $entity->setCategoria($categoria);
+            $entity->setPosicion($posicion);
+            $em->flush();
+            $entity->actualizaThumbnail();
+            $result['ok']="ok";
+            $result['id']=$id;
+        }
+        
+        if($request->isXmlHttpRequest()){
+            $response = new Response(json_encode($result));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }else{
+            
+            return $this->redirect($this->generateUrl('galerias'));
+        }
+    }
+    
+    /**
+     * Cambiar a archivo de categoria.
+     *
+     * @Route("/cambiar/archivo/categoria", name="galerias_cambiar_archivo_categoria")
+     */
+    public function cambiarArchivoCategoriaAction()
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $request = $this->getRequest();
+        $id=$request->query->get('id');
+        $IdCategoria=$request->query->get('categoria');
+        $id=  str_replace('registro-', "", $id);
+        $entity=    $em->getRepository('RichpolisGalMonBundle:Galerias')->find($id);
+        $categoria= $em->getRepository('RichpolisGalMonBundle:CategoriasGaleria')->find($IdCategoria);
+        $posicion=  $em->getRepository('RichpolisGalMonBundle:Galerias')->getMaxPosicion();
+        $result=array();
+
+        if(!$entity){
+            $result['ok']="false";
+        }elseif(!$categoria){
+            $result['ok']="false";
+        }else{
+            $entity->setCategoria($categoria);
+            $entity->setPosicion($posicion);
+            $em->flush();
+            $entity->actualizaThumbnail();
+            $result['ok']="ok";
+            $result['id']=$id;
+        }
+        
+        if($request->isXmlHttpRequest()){
+            $response = new Response(json_encode($result));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }else{
+            
+            return $this->redirect($this->generateUrl('galerias'));
+        }
+    }
 }

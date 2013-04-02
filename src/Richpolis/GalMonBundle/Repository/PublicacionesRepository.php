@@ -15,7 +15,7 @@ class PublicacionesRepository extends EntityRepository
     public function getMaxPosicion($tipo){
         $em=$this->getEntityManager();
         $query=$em->createQuery('
-            SELECT COUNT(p.posicion) as value 
+            SELECT MAX(p.posicion) as value 
             FROM RichpolisGalMonBundle:Publicaciones p 
             WHERE p.tipoPublicacion=:tipo 
             ORDER BY p.posicion ASC
@@ -39,5 +39,24 @@ class PublicacionesRepository extends EntityRepository
     public function getPublicacionesPorTipoYActivas($tipo,$todas=false){
         $query=$this->getQueryPublicacionesPorTipoYActivas($tipo,$todas);
         return $query->getResult();
+    }
+    
+    public function getRegistroUpOrDown($posicionRegistro,$up=true){
+        // $up = true, $up = false is down
+        if($up){
+            //up
+            $query=$this->createQueryBuilder('p')
+                    ->where('p.posicion>:posicion')
+                    ->setParameter('posicion', $posicionRegistro)
+                    ->orderBy('p.posicion', 'DESC');
+        }else{
+            //down
+            $query=$this->createQueryBuilder('p')
+                    ->where('p.posicion<:posicion')
+                    ->setParameter('posicion', $posicionRegistro)
+                    ->orderBy('p.posicion', 'DESC');
+        }
+        
+        return $query->getQuery()->setMaxResults(1)->getOneOrNullResult();
     }
 }

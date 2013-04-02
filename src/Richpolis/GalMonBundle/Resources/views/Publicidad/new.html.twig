@@ -50,6 +50,7 @@ $(document).ready(function(){
         changeMonth: true,
         numberOfMonths: 1,
         dateFormat: "dd-mm-yy",
+        minDate: '{{fecha_inicial |date_modify("+1 day")|date("d-m-Y")}}',
         onClose: function( selectedDate ) {
             $( "#richpolis_galmonbundle_publicidadtype_inativedAt" ).datepicker( "option", "minDate", selectedDate );
         }

@@ -72,6 +72,13 @@ class Fans
     private $updatedAt;
     
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_mostrar_datos", type="boolean", nullable=true)
+     */
+    private $isMostrarDatos;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Galerias", mappedBy="fan")
      */
     protected $galerias;
@@ -213,6 +220,7 @@ class Fans
     {
         return $this->isActive;
     }
+    
 
     /**
      * Set createdAt
@@ -349,5 +357,28 @@ class Fans
     public function setUpdatedAtValue()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Set isMostrarDatos
+     *
+     * @param boolean $isMostrarDatos
+     * @return Fans
+     */
+    public function setIsMostrarDatos($isMostrarDatos)
+    {
+        $this->isMostrarDatos = $isMostrarDatos;
+    
+        return $this;
+    }
+
+    /**
+     * Get isMostrarDatos
+     *
+     * @return boolean 
+     */
+    public function getIsMostrarDatos()
+    {
+        return $this->isMostrarDatos;
     }
 }

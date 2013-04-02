@@ -3,6 +3,7 @@
 namespace Richpolis\GalMonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Richpolis\GalMonBundle\Utils\Richsys;
 
 /**
  * Publicidad
@@ -98,14 +99,15 @@ class Publicidad
     static public $NIVEL4=4;
     static public $NIVEL5=5;
     static public $NIVEL6=6;
+    static public $NIVEL7=7;
     
     static private $sCategorias=array(
         1=>'Nivel 1 460x130',
         2=>'Nivel 2 460x260',
-        3=>'Nivel 3 679x118',
-        4=>'Nivel 4 313x118',
-        5=>'Nivel 5 679x118',
-        6=>'Nivel 6 313x118'
+        3=>'Nivel 3 680x120',
+        4=>'Nivel 4 325x120',
+        5=>'Nivel 5 680x120',
+        6=>'Nivel 6 325x120',
     );
 
     
@@ -399,7 +401,7 @@ class Publicidad
     public $file;
     
     /**
-    ** @ORM\PrePersist
+    * @ORM\PrePersist
     * @ORM\PreUpdate
     */
     public function preUpload()
@@ -423,7 +425,7 @@ class Publicidad
       // if there is an error when moving the file, an exception will
       // be automatically thrown by move(). This will properly prevent
       // the entity from being persisted to the database on error
-      $this->file->move($this->getUploadRootDir(), $this->file);
+      $this->file->move($this->getUploadRootDir(), $this->archivo);
 
       
       unset($this->file);
@@ -435,7 +437,9 @@ class Publicidad
     public function removeUpload()
     {
       if ($file = $this->getAbsolutePath()) {
-        unlink($file);
+        if(file_exists($file)){
+            unlink($file);
+        }  
       }
     }
     
@@ -454,6 +458,57 @@ class Publicidad
     {
         return null === $this->archivo ? null : $this->getUploadDir().'/'.$this->archivo;
     }
-
     
+    public function getAbsolutePath()
+    {
+        return null === $this->archivo ? null : $this->getUploadRootDir().'/'.$this->archivo;
+    }
+
+    public function getArchivoView(){
+        $opciones=array(
+            'tipo_archivo'  => Richsys::getTipoArchivo($this->getArchivo()),
+            'archivo'   =>  $this->getArchivo(),
+            'carpeta'   =>  'publicidad',
+            'width'     =>  $this->getWidth(),
+            'height'    =>  $this->getHeight(),
+        );
+        
+        return Richsys::getArchivoView($opciones);
+    }
+    public function getWidth(){
+        switch($this->getTipoPublicidad()){
+            case self::$NIVEL1: //460x130
+            case self::$NIVEL2: //460x260
+                $resp=460;
+                break;
+            case self::$NIVEL4:
+            case self::$NIVEL6:    
+                //680x120
+                $resp=680;
+                break;
+            case self::$NIVEL5:
+            case self::$NIVEL7:
+                //325x120
+                $resp=325;
+                break;
+        }
+        return $resp;
+    }
+    public function getHeight(){
+        switch($this->getTipoPublicidad()){
+            case self::$NIVEL1: //460x130
+                $resp=130;
+                break;
+            case self::$NIVEL2: //460x260
+                $resp=260;
+                break;
+            case self::$NIVEL4: //680x120
+            case self::$NIVEL6: //680x120   
+            case self::$NIVEL5: //325x120
+            case self::$NIVEL7: //325x120
+                $resp=120;
+                break;
+        }
+        return $resp;
+    }
 }

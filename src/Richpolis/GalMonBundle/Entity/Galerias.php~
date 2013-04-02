@@ -3,6 +3,7 @@
 namespace Richpolis\GalMonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Richpolis\GalMonBundle\Entity\CategoriasGaleria;
 
 /**
  * Galerias
@@ -332,7 +333,7 @@ class Galerias
     private function crearThumbnail(){
         $imagine= new \Imagine\Gd\Imagine();
         $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
-        $size=new \Imagine\Image\Box(145,145);
+        $size=new \Imagine\Image\Box($this->getWidth(),$this->getHeight());
         $this->thumbnail=$this->imagen;
         
         $imagine->open($this->getAbsolutePath())
@@ -378,8 +379,8 @@ class Galerias
     {
       if (null !== $this->file) {
         // do whatever you want to generate a unique name
-        $this->imagen = uniqid().'.'.$this->file->guessExtension();
-        $this->thumbnail=$this->imagen;
+        $this->imagen       =   uniqid().'.'.$this->file->guessExtension();
+        $this->thumbnail    =   $this->imagen;
       }
     }
 
@@ -409,13 +410,16 @@ class Galerias
     public function removeUpload()
     {
       if ($file = $this->getAbsolutePath()) {
-        unlink($file);
+        if(file_exists($file)){
+            unlink($file);
+        }
       }
       if($thumbnail=$this->getAbosluteThumbnailPath()){
-          unlink($thumbnail);
+         if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
       }
     }
-    
     
     protected function getUploadDir()
     {
@@ -454,5 +458,59 @@ class Galerias
     
     public function getAbosluteThumbnailPath(){
         return null === $this->thumbnail ? null : $this->getUploadRootDir().'/thumbnails/'.$this->thumbnail;
+    }
+    
+    public function actualizaThumbnail()
+    {
+      if($thumbnail=$this->getAbosluteThumbnailPath()){
+         if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
+      }
+      $this->crearThumbnail();
+    }
+    
+    public function getArchivoView(){
+        $opciones=array(
+            'tipo_archivo'  => Richsys::getTipoArchivo($this->getImagen()),
+            'archivo'   =>  $this->getImagen(),
+            'carpeta'   =>  'galerias',
+            'width'     =>  $this->getWidth(),
+            'height'    =>  $this->geHeight(),
+        );
+        
+        return Richsys::getArchivoView($opciones);
+    }
+    public function getWidth(){
+        switch($this->getCategoria()->getTipoCategoria()){
+            case CategoriasGaleria::$LO_QUE_ESTOY_VIENDO: //84x91
+                $resp= 84;
+                break;
+            case CategoriasGaleria::$DECORA_TU_PANTALLA: //460x306
+                $resp=460;
+                break;
+            case CategoriasGaleria::$GALERIA_OFICIAL: // 145x175
+            case CategoriasGaleria::$TUS_FOTOS: // 145x145
+                $resp=145;
+                break;
+        }
+        return $resp;
+    }
+    public function getHeight(){
+        switch($this->getCategoria()->getTipoCategoria()){
+            case CategoriasGaleria::$LO_QUE_ESTOY_VIENDO: //84x91
+                $resp= 91;
+                break;
+            case CategoriasGaleria::$DECORA_TU_PANTALLA: //460x306
+                $resp=306;
+                break;
+            case CategoriasGaleria::$GALERIA_OFICIAL: // 145x175
+                $resp=175;
+                break;
+            case CategoriasGaleria::$TUS_FOTOS: // 145x145
+                $resp=145;
+                break;
+        }
+        return $resp;
     }
 }

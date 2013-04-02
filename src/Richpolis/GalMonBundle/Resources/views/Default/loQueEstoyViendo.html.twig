@@ -1,0 +1,29 @@
+<div id="contenedor-loqueestoyviendo">
+    <div class="imagen-show" 
+         style="background-image: url({{galerias[0].webPath}}); background-position: center center;">
+        <span>&nbsp;</span>
+    </div>
+    <div class="load-imagen" style="font-family: 'oswaldregular';font-size: 16pt; ">
+        <p style="padding-top: 15px;">
+        ¿Que estas viendo tú? 
+        <a href="#modalFormularioLoqueestoyviendo" role="button" data-toggle="modal" style="float: right; position: relative; top: -5px; right: 10px;">
+            Sube lo que estas viendo!
+        </a>
+        </p>        
+    </div>    
+    <div id="galeria-loqueestoyviendo" >
+        <img src="{{ asset('images/pagina/control_galeria.jpg') }}" class="galeria-control-izquierda" />
+        <div class="galeria-contenedor">
+            <ul id="galeria-lo-que-estoy-viendo" class="galeria">
+                {% for galeria in galerias %}
+                <li class="galeria-item" 
+                    style="background-image: url({{galeria.thumbnailWebPath}}); background-position: center center; background-repeat: no-repeat;" onclick="loadImagenShowLoQueEstoyViendo('{{galeria.webPath}}');">
+                    <span> &nbsp;</span> 
+                </li>
+                {% endfor %}
+            </ul>
+         </div>
+           <img src="{{ asset('images/pagina/control_galeria.jpg') }}" class="galeria-control-derecha"/>
+    </div>
+</div>
+    

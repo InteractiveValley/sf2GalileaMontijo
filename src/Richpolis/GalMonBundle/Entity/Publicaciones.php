@@ -3,6 +3,7 @@
 namespace Richpolis\GalMonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Richpolis\GalMonBundle\Utils\Richsys;
 
 /**
  * Publicaciones
@@ -359,12 +360,13 @@ class Publicaciones
         $this->updatedAt = new \DateTime();
     }
     
+    
     /*** uploads ***/
     
     public $file;
     
     /**
-    ** @ORM\PrePersist
+    * @ORM\PrePersist
     * @ORM\PreUpdate
     */
     public function preUpload()
@@ -400,10 +402,11 @@ class Publicaciones
     public function removeUpload()
     {
       if ($file = $this->getAbsolutePath()) {
-        unlink($file);
+        if(file_exists($file)){
+            unlink($file);
+        }
       }
     }
-    
     
     protected function getUploadDir()
     {
@@ -424,153 +427,32 @@ class Publicaciones
     {
         return null === $this->imagen ? null : $this->getUploadDir().'/'.$this->imagen;
     }
-
     
     public function getAbsolutePath()
     {
         return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
     }
     
-    public function getTipoArchivo(){
-        $archivo=explode(".", $this->getImagen());
-        $resp=1;
-        switch ($archivo[1]){
-            case "png":
-            case "jpg":
-            case "gif":
-            case "jpeg":    
-              $resp="Imagen";
-              break;
-            case "flv":
-            case "mpg":
-            case "mp4":
-            case "avi":    
-              $resp="Video";
-              break;
-            default:    
-              $resp="Link";
-              break;
-        }
-        return $resp;
+    
+    public function getArchivoView(){
+        $opciones=array(
+            'tipo_archivo'  =>  Richsys::getTipoArchivo($this->getImagen()),
+            'archivo'   =>  $this->getImagen(),
+            'carpeta'   =>  'publicaciones',
+            'width'     =>  $this->getWidth(),
+            'height'    =>  $this->getHeight(),
+        );
+        
+        return Richsys::getArchivoView($opciones);
     }
-    public function getArchivoView(array $opciones){
-        $respuesta="";
-        $tipoarchivo=$this->getTipoArchivo();
-        $archivo=$this->getImagen();
-        
-        
-        switch($tipoarchivo){
-            case "Imagen":
-                $respuesta='<img src="'.$this->getWebPath().'" style="max-width:600px;max-height:400px;" title="'.$this->getTitulo().'"/>';
-                break;
-            case "Link":
-                $video_link=$archivo;
-                $wVideo=(!isset($opciones["width"])?560:$opciones["width"]);
-                $hVideo=(!isset($opciones["height"])?400:$opciones["height"]);
-                $withLayout=0;
-                if(preg_match('/youtube\.com\/watch/i',$video_link)){
-                    $respuesta='<iframe src ="http://www.youtube.com/embed/'.sfRichSys::getVideoIdYoutube($video_link).'?rel=1&autoplay=0" width="'.$wVideo.'" height="'.$hVideo.'" frameborder="no"></iframe>';
-                }elseif(preg_match('/vimeo\.com/i',$video_link)){
-                    $regExp="/http:\/\/(www\.)?vimeo.com\/(\d+)/";
-                    preg_match($regExp,$video_link,$matches);
-                    $respuesta='<iframe src="http://player.vimeo.com/video/'. $matches[2].'?autoplay=0" width="'.$wVideo.'" height="'.$hVideo.'" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-                }
-                break;
-             case $tipos['Video']:
-                $respuesta= sprintf(<<<EOF
-<script type="text/javascript" src="/js/flowplayer-3.2.9.min.js"></script>
-<a href="/uploads/galeria/%s"
-   style="display:block;width:520px;height:330px"  
-   id="player_%s"> 
-</a> 
-<!-- this will install flowplayer inside previous A- tag. -->
-<script>
-    flowplayer("player_%s", "/swf/flowplayer-3.2.10.swf");
-</script>
-EOF
-      ,
-      $this->getArchivo(),
-      $this->getId(),
-      $this->getId()
-                  
-    );
-                break;
-
-            
-            case 'Musica':
-                $respuesta= sprintf(<<<EOF
-<link href="/css/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="/js/jquery.jplayer.min.js"></script>
-<script>
-$(document).ready(function(){
- $("#jquery_jplayer_%s").jPlayer({
-  ready: function () {
-   $(this).jPlayer("setMedia", {
-    mp3: "/uploads/galeria/%s",
-    oga: "/uploads/galeria/sound.ogg"
-   });
-  },
-  swfPath: "/swf",
-  supplied: "mp3, oga"
- });
-}); 
-</script>
-<div id="jquery_jplayer_%s" class="jp-jplayer"></div>
-    <div id="jp_container_1" class="jp-audio">
-			<div class="jp-type-single">
-				<div class="jp-gui jp-interface">
-					<ul class="jp-controls">
-						<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-						<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-						<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
-						<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-						<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-						<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
-					</ul>
-					<div class="jp-progress">
-						<div class="jp-seek-bar">
-							<div class="jp-play-bar"></div>
-						</div>
-					</div>
-					<div class="jp-volume-bar">
-						<div class="jp-volume-bar-value"></div>
-					</div>
-					<div class="jp-time-holder">
-						<div class="jp-current-time"></div>
-						<div class="jp-duration"></div>
-
-						<ul class="jp-toggles">
-							<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-							<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="jp-title">
-					<ul>
-						<li>Cro Magnon Man</li>
-					</ul>
-				</div>
-				<div class="jp-no-solution">
-					<span>Update Required</span>
-					To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-				</div>
-			</div>
-		</div>
-
-EOF
-      ,
-      $this->getId(),
-      $this->getArchivo(),
-      $this->getId()
-                  
-    );
-                break;
-            case 'Flash':
-                $respuesta= '<object id="archivo_galeria_'.$this->getId().'" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="600" height="400"><param name="wmode" value="true" /><param name="allowfullscreen" value="false" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://'.$_SERVER['HTTP_HOST'].'/uploads/galeria/'.$this->getArchivo().'" /><embed src="http://'.$_SERVER['HTTP_HOST'].'/uploads/galeria/'.$this->getArchivo().'" type="application/x-shockwave-flash" allowfullscreen="false" allowscriptaccess="always" width="600" height="400" wmode="true"></embed></object>';
-                break;
-        }
-        return $respuesta;
-     }
+    
+    public function getWidth(){
+        return 145;
+    }
+    
+    public function getHeight(){
+        return 145;
+    }
     
     
 }

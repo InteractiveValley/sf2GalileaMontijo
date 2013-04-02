@@ -88,7 +88,7 @@
             {'id':Id,'titulo':Title,'contenido':Description},
             function(data){
                  setTimeout(function(){
-                        $('#image-loader').slideUp();
+                        $('#image-loader').hide();
                  }, 1000);
                  $("#registro-"+Id).html(data);
                  aplicarGallerySorteable();
@@ -102,6 +102,48 @@
            alert(data)
           $("#lista_imagenes").html(data);
        });
+    }
+    
+    function cambiarTipoCategoria( $item ,$tipo) {
+	$item.fadeOut(function() {
+            $('#image-loader').show();
+            var url='{{path('galerias_cambiar_tipo_categoria')}}';
+            $.get(url,{'id':$item.attr('id'),'tipo':$tipo.attr('tipo')},
+                function(data){
+                    if(data.ok="ok"){
+                        setTimeout(function(){
+                            $('#image-loader').hide();
+                        }, 1000);
+                        aplicarGallerySorteable();
+                    }else{
+                        $('#image-loader').hide();
+                        alert("No se pudo cambiar de tipo de categoria")
+                        $item.fadeIn();
+                    }
+                     
+                });
+	});
+    }
+    
+    function cambiarArchivoCategoria( $item ,$archivo) {
+	$item.fadeOut(function() {
+            $('#image-loader').show();
+            var url='{{path('galerias_cambiar_archivo_categoria')}}';
+            $.get(url,{'id':$item.attr('id'),'categoria':$archivo.attr('categoria')},
+                function(data){
+                    if(data.ok="ok"){
+                        setTimeout(function(){
+                            $('#image-loader').hide();
+                        }, 1000);
+                        aplicarGallerySorteable();
+                    }else{
+                        $('#image-loader').hide();
+                        alert("No se pudo cambiar al archivo de categoria")
+                        $item.fadeIn();
+                    }
+                     
+                });
+	});
     }
 
     function guardarEditarFormModal(){
@@ -154,12 +196,13 @@
     
     
     
-    function aplicarGallerySorteable(){
-        $("#gallery" ).sortable({
+    function aplicarGallerySorteable($gallery){
+        $gallery.sortable({
             handle: '.image-sorteable',
+            placeholder: "ui-state-highlight",
             update: function(){
                 $('#image-loader').show();
-                var order = $('#gallery').sortable('serialize');
+                var order = $gallery.sortable('serialize');
                 $.post('{{path('categorias_galeria_ordenar')}}?'+order,
                  {'categoria':'{{entity.id}}'},
                  function(data){
@@ -175,16 +218,51 @@ $(function() {
    var $gallery = $( "#gallery" ),
    $trash = $( "#papelera" );
    
-   aplicarGallerySorteable();
-    $( "#gallery" ).disableSelection();
+   // let the gallery items be draggable
+   /* $( "li", $gallery ).draggable({
+	cancel: "button", // clicking an icon won't initiate dragging
+	revert: "invalid", // when not dropped, the item will revert back to its initial position
+	containment: "document",
+	helper: "clone",
+	cursor: "move"
+    });*/
+   
+   aplicarGallerySorteable($gallery);
+    $gallery.disableSelection();
    
     $trash.droppable({
-      accept: "#gallery > li",
-      activeClass: "ui-state-highlight",
+      accept: "#gallery > li,#gallery_para_aprobar > li",
+      activeClass: "ui-state-default",
+      hoverClass: "ui-state-highlight",
       drop: function( event, ui ) {
         ui.draggable.find(".eliminar-item").click();
       }
     });
+    
+    $("li.tipo-categoria").each(function(){
+       var $tipo=$(this);
+       $tipo.droppable({
+            accept: "#gallery > li",
+            activeClass: "ui-state-default",
+            hoverClass: "ui-state-highlight",
+            drop: function( event, ui ) {
+                cambiarTipoCategoria(ui.draggable,$tipo);
+            }
+       }); 
+    });
+    
+    $("li.archivo-categoria").each(function(){
+       var $tipo=$(this);
+       $tipo.droppable({
+            accept: "#gallery > li",
+            activeClass: "ui-state-default",
+	    hoverClass: "ui-state-highlight",
+            drop: function( event, ui ) {
+                cambiarArchivoCategoria(ui.draggable,$tipo);
+            }
+       }); 
+    });
+    
       
 });
 </script>
@@ -209,7 +287,7 @@ $(function() {
     <li id="papelera"><img src="{{asset('images/trash_grande.png')}}"/></li>
     <li class="nav-header">Archivos</li>
     {% for cat in categorias %}
-    <li class="categoria-tipo" categoria="{{cat.id}}">
+    <li class="archivo-categoria" categoria="{{cat.id}}">
         <a href="{{path('categorias_galeria_show',{'id':cat.id})}}">{{cat.categoria}}</a>
     </li>
     {% else %}

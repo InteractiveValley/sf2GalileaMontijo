@@ -11,6 +11,7 @@ use Richpolis\GalMonBundle\Entity\Publicidad;
 use Richpolis\GalMonBundle\Form\PublicidadType;
 
 
+
 /**
  * Publicidad controller.
  *
@@ -142,11 +143,18 @@ class PublicidadController extends Controller
         }
         $entity->setTipoPublicidad($tipo);
         
+        $fecha_inicial=$this->getDoctrine()->getRepository('RichpolisGalMonBundle:Publicidad')->getFechaInactivedAtMax();
+        
+        if(!$fecha_inicial[1]){
+            $fecha_inicial[1]= new \DateTime();
+        }
+        
         $form   = $this->createForm(new PublicidadType(), $entity);
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'fecha_inicial'=>$fecha_inicial[1],
         );
     }
 
@@ -227,7 +235,6 @@ class PublicidadController extends Controller
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
-
             return $this->redirect($this->generateUrl('publicidad_show', array('id' => $id)));
         }
 
@@ -271,4 +278,6 @@ class PublicidadController extends Controller
             ->getForm()
         ;
     }
+    
+    
 }

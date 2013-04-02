@@ -57,7 +57,7 @@ class UsuariosRepository extends EntityRepository implements UserProviderInterfa
     public function getMaxPosicion() {
         $em = $this->getEntityManager();
         $query = $em->createQuery('
-            SELECT COUNT(u.posicion) as value 
+            SELECT MAX(u.posicion) as value 
             FROM RichpolisGalMonBundle:Usuarios u 
             ORDER BY u.posicion ASC
             ');

@@ -9,8 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\GalMonBundle\Entity\Fans;
 use Richpolis\GalMonBundle\Form\FansType;
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+
 
 /**
  * Fans controller.
@@ -206,5 +205,57 @@ class FansController extends Controller
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+    
+    /**
+     * Subir registro de Fans.
+     *
+     * @Route("/{id}/up", name="fans_up")
+     * @Method("GET")
+     */
+    public function upAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $registroUp = $em->getRepository('RichpolisGalMonBundle:Fans')->find($id);
+        
+        if ($registroUp) {
+            $registroDown=$em->getRepository('RichpolisGalMonBundle:Fans')->getRegistroUpOrDown($registroUp->getPosicion(),true);
+            if ($registroDown) {
+                $posicion=$registroUp->getPosicion();
+                $registroUp->setPosicion($registroDown->getPosicion());
+                $registroDown->setPosicion($posicion);
+                $em->flush();
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('fans',array(
+            'page'=>$this->getRequest()->query->get('page', 1)
+        )));
+    }
+    
+    /**
+     * Subir registro de Fans.
+     *
+     * @Route("/{id}/down", name="fans_down")
+     * @Method("GET")
+     */
+    public function downAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $registroDown = $em->getRepository('RichpolisGalMonBundle:Fans')->find($id);
+        
+        if ($registroDown) {
+            $registroUp=$em->getRepository('RichpolisGalMonBundle:Fans')->getRegistroUpOrDown($registroDown->getPosicion(),false);
+            if ($registroUp) {
+                $posicion=$registroUp->getPosicion();
+                $registroUp->setPosicion($registroDown->getPosicion());
+                $registroDown->setPosicion($posicion);
+                $em->flush();
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('fans',array(
+            'page'=>$this->getRequest()->query->get('page', 1)
+        )));
     }
 }

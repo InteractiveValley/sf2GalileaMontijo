@@ -3,6 +3,7 @@
 namespace Richpolis\GalMonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Richpolis\GalMonBundle\Utils\Richsys;
 
 /**
  * GaleriasVotaciones
@@ -360,10 +361,10 @@ class Votaciones
      * 
      * @return void
      */
-    private function crearThumbnail(){
+    private function crearThumbnail($width=275,$heigth=275){
         $imagine= new \Imagine\Gd\Imagine();
         $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
-        $size=new \Imagine\Image\Box(145,145);
+        $size=new \Imagine\Image\Box($width,$height);
         $this->thumbnail=$this->imagen;
         
         $imagine->open($this->getAbsolutePath())
@@ -429,7 +430,7 @@ class Votaciones
       // the entity from being persisted to the database on error
       $this->file->move($this->getUploadRootDir(), $this->imagen);
 
-      $this->crearThumbnail();
+      $this->crearThumbnail(275,275);
       
       unset($this->file);
     }
@@ -440,10 +441,14 @@ class Votaciones
     public function removeUpload()
     {
       if ($file = $this->getAbsolutePath()) {
-        unlink($file);
+        if(file_exists($file)){
+            unlink($file);
+        }
       }
       if($thumbnail=$this->getAbosluteThumbnailPath()){
-          unlink($thumbnail);
+          if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
       }
     }
     
@@ -486,4 +491,17 @@ class Votaciones
     public function getAbosluteThumbnailPath(){
         return null === $this->thumbnail ? null : $this->getUploadRootDir().'/thumbnails/'.$this->thumbnail;
     }
+    
+    public function getArchivoView($width=275,$height=275){
+        $opciones=array(
+            'tipo_archivo'  => Richsys::getTipoArchivo($this->getImagen()),
+            'archivo'   => $this->getImagen(),
+            'carpeta'   => 'votaciones',
+            'width'     =>$width,
+            'height'    =>$height,
+        );
+        
+        return Richsys::getArchivoView($opciones);
+    }
+    
 }

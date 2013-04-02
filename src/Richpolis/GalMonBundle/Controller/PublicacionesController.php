@@ -8,11 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\GalMonBundle\Entity\Publicaciones;
-use Richpolis\GalMonBundle\Form\PublicacionesType;
-
-
-
-
+use Richpolis\GalMonBundle\Form\PublicacionesType; 
 
 
 /**
@@ -301,5 +297,57 @@ class PublicacionesController extends Controller
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+    
+    /**
+     * Subir registro de Publicaciones.
+     *
+     * @Route("/{id}/up", name="publicaciones_up")
+     * @Method("GET")
+     */
+    public function upAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $registroUp = $em->getRepository('RichpolisGalMonBundle:Publicaciones')->find($id);
+        
+        if ($registroUp) {
+            $registroDown=$em->getRepository('RichpolisGalMonBundle:Publicaciones')->getRegistroUpOrDown($registroUp->getPosicion(),true);
+            if ($registroDown) {
+                $posicion=$registroUp->getPosicion();
+                $registroUp->setPosicion($registroDown->getPosicion());
+                $registroDown->setPosicion($posicion);
+                $em->flush();
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('publicaciones',array(
+            'page'=>$this->getRequest()->query->get('page', 1)
+        )));
+    }
+    
+    /**
+     * Subir registro de Publicaciones.
+     *
+     * @Route("/{id}/down", name="publicaciones_down")
+     * @Method("GET")
+     */
+    public function downAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $registroDown = $em->getRepository('RichpolisGalMonBundle:Publicaciones')->find($id);
+        
+        if ($registroDown) {
+            $registroUp=$em->getRepository('RichpolisGalMonBundle:Publicaciones')->getRegistroUpOrDown($registroDown->getPosicion(),false);
+            if ($registroUp) {
+                $posicion=$registroUp->getPosicion();
+                $registroUp->setPosicion($registroDown->getPosicion());
+                $registroDown->setPosicion($posicion);
+                $em->flush();
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('publicaciones',array(
+            'page'=>$this->getRequest()->query->get('page', 1)
+        )));
     }
 }
