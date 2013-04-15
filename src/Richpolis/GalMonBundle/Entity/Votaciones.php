@@ -99,7 +99,13 @@ class Votaciones
      */
     private $semana;
 
-
+    
+    public function __construct()
+    {
+        $this->fan=  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->semana=  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive=false;
+    }
 
     /**
      * Get id
@@ -361,7 +367,7 @@ class Votaciones
      * 
      * @return void
      */
-    private function crearThumbnail($width=275,$heigth=275){
+    private function crearThumbnail($width=275,$height=275){
         $imagine= new \Imagine\Gd\Imagine();
         $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
         $size=new \Imagine\Image\Box($width,$height);

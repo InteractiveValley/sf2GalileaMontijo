@@ -69,6 +69,14 @@ class DefaultController extends Controller
     }
     
     /**
+     * @Route("/semana/votaciones", name="RichpolisBackendBundle_semana_votaciones")
+     */
+    public function semanaVotacionesAction()
+    {
+        return $this->forward('RichpolisGalMonBundle:SemanaVotaciones:index');
+    }
+    
+    /**
      * @Route("/semana/actual", name="RichpolisBackendBundle_semana_actual")
      */
     public function semanaActualAction()

@@ -11,10 +11,40 @@
     height: 235px; 
 }*/
 
-.gallery li { float: left; width:100px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; list-style-type: none; }
-.gallery li h5 { margin: 0 0 0.4em; cursor: move; font-size: small; font-weight: normal; }
-.gallery li img {  max-width: 133px; cursor: move; }
+.gallery li { 
+    float: left; 
+    padding: 0.4em; 
+    margin: 0 0.4em 0.4em 0; 
+    text-align: center; 
+    list-style-type: none; 
+    width: 145px;
+    min-height: 145px;
+}
+.gallery li h5 { 
+    margin: 0 0 0.4em; 
+    cursor: move; 
+    font-size: small; 
+    font-weight: normal; 
+    background-color: #00438A;
+    color: white;
+    
+}
+.gallery li img {  
+    max-width: 145px;
+    max-height: 90px;
+    cursor: move; 
+}
 
 .pagination ul li a{
     color: black;
+}
+
+.galeria-item-li{
+     border: 1px solid gray;
+    
+}
+
+.tipo-categoria{
+    height: 20px;
+    margin-bottom: 5px;
 }

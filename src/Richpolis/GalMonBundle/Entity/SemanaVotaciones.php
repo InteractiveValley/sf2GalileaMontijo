@@ -3,6 +3,7 @@
 namespace Richpolis\GalMonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Richpolis\GalMonBundle\Repository\SemanaVotacionesRepository;
 
 /**
  * SemanaVotaciones
@@ -281,4 +282,18 @@ class SemanaVotaciones
     {
         $this->updatedAt = new \DateTime();
     }
+
+    /*public function getImagenSemanaAnterior()
+    {
+        //$repository= new \Richpolis\GalMonBundle\Repository\se;
+        $imagen=SemanaVotacionesRepository::getImagenSemanaAnterior();
+        return $imagen;
+    }   
+    
+    public function getVotacionesAleatorias(){
+        //$repository= new \Richpolis\GalMonBundle\Repository\SemanaVotacionesRepository();
+        $imagenes=  SemanaVotacionesRepository::getVotacionesAleatorias($this);
+        return $imagenes;
+    }*/
+
 }

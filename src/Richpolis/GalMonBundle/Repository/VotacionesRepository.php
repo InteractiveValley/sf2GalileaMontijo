@@ -36,18 +36,20 @@ class VotacionesRepository extends EntityRepository
     }
     
     public function getQueryVotacionesPorSemana($semana,$active=true){
-        $query=$this->createQueryBuilder('v')
-                    ->where('v.semana=:semana')
-                    ->setParameter('semana', $semana)
-                    ->andWhere('v.isActive=:active')
-                    ->setParameter('active', $active)
-                    ->orderBy('v.posicion','ASC');
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('
+            SELECT v  
+            FROM RichpolisGalMonBundle:Votaciones v 
+            WHERE v.isActive=:active 
+            AND v.semana=:semana 
+            ORDER BY v.posicion ASC
+            ')->setParameters(array('semana'=>$semana,'active'=>$active));
         return $query;
     }
     
     public function getVotacionesPorSemana($semana,$active=true){
         $query=$this->getQueryVotacionesPorSemana($semana, $active);
-        return $query->getQuery()->getResult();
+        return $query->getResult();
     }
     
     public function getQueryVotacionesPorSemanaYStatus($semana,$active){

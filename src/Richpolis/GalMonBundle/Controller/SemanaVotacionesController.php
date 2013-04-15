@@ -74,7 +74,7 @@ class SemanaVotacionesController extends Controller
                                ->getSemanaActual();
             
         $semana = $em->getRepository('RichpolisGalMonBundle:SemanaVotaciones')
-                               ->getSemanaConGaleriaPorId($id);
+                               ->find($id);
         
         if (!$semana_actual && !$semana) {
             throw $this->createNotFoundException('Unable to find SemanaVotaciones entity.');
@@ -239,6 +239,10 @@ class SemanaVotacionesController extends Controller
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find SemanaVotaciones entity.');
+            }
+            
+            foreach($entity->getVotaciones() as $galeria){
+                $em->remove($galeria);
             }
 
             $em->remove($entity);

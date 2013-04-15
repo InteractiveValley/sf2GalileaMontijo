@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

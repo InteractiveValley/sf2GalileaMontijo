@@ -85,3 +85,26 @@ knp_paginator:
         # y para los controles que premiten reordenar los resultados
         pagination: KnpPaginatorBundle:Pagination:sliding.html.twig
         sortable:   KnpPaginatorBundle:Pagination:sortable_link.html.twig
+
+avalanche_imagine:
+    filters:
+        categoria_galeria_thumb:
+            type:    thumbnail
+            options: { size: [75, 75], mode: outbound, cache_type: public, cache_expires: '2 weeks' }
+        categoria_galeria_imagen:
+            type:    thumbnail
+            options: { size: [400, 400], mode: inset, cache_type: public, cache_expires: '2 weeks' }
+        semana_votaciones_imagen_semana:
+            type:    thumbnail
+            options: { size: [275, 275], mode: outbound, cache_type: public, cache_expires: '2 weeks' }
+        semana_votaciones_imagen:
+            type:    thumbnail
+            options: { size: [213, 213], mode: outbound, cache_type: public, cache_expires: '2 weeks' }
+
+parameters:
+    # dirección de correo electrónico para contacto del Blogger
+    richpolis_galmon_emails_to_email: richpolis@gmail.com
+    # Blogger máximo de comentarios recientes
+    richpolis_galmon_registros_limit: 10
+    richpolis_galmon_imagenes_limit: 50
+    richpolis_galmon_uploads: %kernel.root_dir%/../web/uploads

@@ -475,13 +475,13 @@ class Publicidad
             case Richsys::$TIPO_ARCHIVO_IMAGEN:
                 if(!$this->thumbnail){
                     if(!file_exists($this->getAbosluteThumbnailPath()) && file_exists($this->getAbsolutePath())){
-                        $this->crearThumbnail();
+                        $this->crearThumbnail($this->getWidth(),$this->getHeight());
                     }
                 }
                 return null === $this->thumbnail ? null : $this->getUploadDir().'/thumbnails/'.$this->thumbnail;
             break;
             case Richsys::$TIPO_ARCHIVO_FLASH:
-                 
+                return $this->getUploadDir().'/thumbnails/flash.jpg';
             break;
         }
     }
@@ -502,11 +502,11 @@ class Publicidad
      * 
      * @return void
      */
-    private function crearThumbnail($width=145,$heigth=145){
+    private function crearThumbnail($width=145,$height=145){
         $imagine= new \Imagine\Gd\Imagine();
         $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
         $size=new \Imagine\Image\Box($width,$height);
-        $this->thumbnail=$this->imagen;
+        $this->thumbnail=$this->archivo;
         
         $imagine->open($this->getAbsolutePath())
                 ->thumbnail($size, $mode)
@@ -515,10 +515,25 @@ class Publicidad
     }
 
     public function getArchivoView(){
+        $tipoArchivo=Richsys::getTipoArchivo($this->getArchivo());
+        if($tipoArchivo==Richsys::$TIPO_ARCHIVO_FLASH){
+            $archivo=$this->getArchivo();
+            $carpeta="publicidad";
+        }else{
+            if(file_exists($this->getAbosluteThumbnailPath())){
+                $archivo=$this->getArchivo();
+                $carpeta="publicidad/thumbnails";
+            }else{
+                $this->crearThumbnail($this->getWidth(),$this->getHeight());
+                $archivo=$this->getArchivo();
+                $carpeta="publicidad/thumbnails";
+            }
+        }
+        
         $opciones=array(
-            'tipo_archivo'  => Richsys::getTipoArchivo($this->getArchivo()),
-            'archivo'   =>  $this->getArchivo(),
-            'carpeta'   =>  'publicidad',
+            'tipo_archivo'  => $tipoArchivo,
+            'archivo'   =>  $archivo,
+            'carpeta'   =>  $carpeta,
             'width'     =>  $this->getWidth(),
             'height'    =>  $this->getHeight(),
         );

@@ -66,4 +66,17 @@ class FansRepository extends EntityRepository
         
         return $query->getQuery()->setMaxResults(1)->getOneOrNullResult();
     }
+    
+    public function getFanEnabledUpload($data){
+        if(!isset($data['email'])){
+            return null;
+        }
+        $query=$this->createQueryBuilder('f')
+              ->where('f.isActive=:active')
+              ->setParameter('active', true)
+              ->andWhere('f.email=:email')
+              ->setParameter('email',$data['email'])
+              ->orderBy('f.createdAt', 'ASC');
+        return $query->getQuery()->setMaxResults(1)->getOneOrNullResult();
+    }
 }

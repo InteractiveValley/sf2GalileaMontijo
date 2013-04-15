@@ -23,6 +23,10 @@ login_check:
 
 logout:
     pattern:   /logout
+    
+_imagine:
+    resource: .
+    type:     imagine
 
 
 # Internal routing configuration to handle ESI

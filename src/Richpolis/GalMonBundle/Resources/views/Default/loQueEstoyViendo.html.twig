@@ -1,12 +1,16 @@
 <div id="contenedor-loqueestoyviendo">
     <div class="imagen-show" 
-         style="background-image: url({{galerias[0].webPath}}); background-position: center center;">
+         style="background-image: url({{galerias[0].webPath}});">
         <span>&nbsp;</span>
     </div>
     <div class="load-imagen" style="font-family: 'oswaldregular';font-size: 16pt; ">
         <p style="padding-top: 15px;">
         ¿Que estas viendo tú? 
-        <a href="#modalFormularioLoqueestoyviendo" role="button" data-toggle="modal" style="float: right; position: relative; top: -5px; right: 10px;">
+        <a href="#modalUploadForm" 
+           onclick="javascript:showFormUpload('{{path('fans_upload_galerias',{'categoria_id':galerias[0].categoria.id})}}','Sube lo que estas viendo!')"
+           role="button" 
+           data-toggle="modal" 
+           style="float: right; position: relative; top: -5px; right: 10px;">
             Sube lo que estas viendo!
         </a>
         </p>        

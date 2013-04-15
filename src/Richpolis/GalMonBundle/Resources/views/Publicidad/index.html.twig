@@ -34,7 +34,6 @@
         <tr>
             <th>Id</th>
             <th>Archivo</th>
-            <th>Thumbnail</th>
             <th>Tipo publicidad</th>
             <th>Desde</th>
             <th>Hasta</th>
@@ -46,8 +45,7 @@
     {% for entity in pagination %}
         <tr>
             <td><a href="{{ path('publicidad_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.archivo }}</td>
-            <td>{{ entity.thumbnail }}</td>
+            <td>{{ entity.archivoView | raw }}</td>
             <td>{{ entity.stringTipoPublicidad }}</td>
             <td>{% if entity.activedat %}{{ entity.activedat|date('d/m/Y H:i') }}{% endif%}</td>
             <td>{% if entity.inativedat %}{{ entity.inativedat|date('d/m/Y H:i') }}{% endif%}</td>

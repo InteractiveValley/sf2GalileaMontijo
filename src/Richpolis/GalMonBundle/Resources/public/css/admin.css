@@ -18,7 +18,7 @@
     text-align: center; 
     list-style-type: none; 
     width: 145px;
-    height: 145px;
+    min-height: 145px;
 }
 .gallery li h5 { 
     margin: 0 0 0.4em; 

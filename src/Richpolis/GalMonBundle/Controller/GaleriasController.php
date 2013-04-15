@@ -90,7 +90,7 @@ class GaleriasController extends Controller
         $categoriaId=$this->getRequest()->query->get('categoria',$this->getCategoriaDefault());
 
         $categoria=$this->getDoctrine()->getRepository('RichpolisGalMonBundle:CategoriasGaleria')
-                                        ->getCategoriaConGaleriaPorId($categoriaId);
+                                        ->find($categoriaId);
 
         $max=$this->getDoctrine()->getRepository('RichpolisGalMonBundle:Galerias')->getMaxPosicion();
         

@@ -439,7 +439,12 @@ class Publicidad
       if ($file = $this->getAbsolutePath()) {
         if(file_exists($file)){
             unlink($file);
-        }  
+        }
+      }
+      if($thumbnail=$this->getAbosluteThumbnailPath()){
+          if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
       }
     }
     
@@ -454,21 +459,81 @@ class Publicidad
         return __DIR__.'/../../../../web'.$this->getUploadDir();
     }
     
+    protected function getThumbnailRootDir()
+    {
+        return __DIR__.'/../../../../web'.$this->getUploadDir().'/thumbnails';
+    }
+        
     public function getWebPath()
     {
         return null === $this->archivo ? null : $this->getUploadDir().'/'.$this->archivo;
+    }
+
+    public function getThumbnailWebPath()
+    {
+        switch(Richsys::getTipoArchivo($this->getArchivo())){
+            case Richsys::$TIPO_ARCHIVO_IMAGEN:
+                if(!$this->thumbnail){
+                    if(!file_exists($this->getAbosluteThumbnailPath()) && file_exists($this->getAbsolutePath())){
+                        $this->crearThumbnail($this->getWidth(),$this->getHeight());
+                    }
+                }
+                return null === $this->thumbnail ? null : $this->getUploadDir().'/thumbnails/'.$this->thumbnail;
+            break;
+            case Richsys::$TIPO_ARCHIVO_FLASH:
+                return $this->getUploadDir().'/thumbnails/flash.jpg';
+            break;
+        }
     }
     
     public function getAbsolutePath()
     {
         return null === $this->archivo ? null : $this->getUploadRootDir().'/'.$this->archivo;
     }
+    
+    public function getAbosluteThumbnailPath(){
+        return null === $this->thumbnail ? null : $this->getUploadRootDir().'/thumbnails/'.$this->thumbnail;
+    }
+    
+    
+    
+    /*
+     * Crea el thumbnail y lo guarda en un carpeta dentro del webPath thumbnails
+     * 
+     * @return void
+     */
+    private function crearThumbnail($width=145,$height=145){
+        $imagine= new \Imagine\Gd\Imagine();
+        $mode= \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+        $size=new \Imagine\Image\Box($width,$height);
+        $this->thumbnail=$this->archivo;
+        
+        $imagine->open($this->getAbsolutePath())
+                ->thumbnail($size, $mode)
+                ->save($this->getAbosluteThumbnailPath());
+        
+    }
 
     public function getArchivoView(){
+        $tipoArchivo=Richsys::getTipoArchivo($this->getArchivo());
+        if($tipoArchivo==Richsys::$TIPO_ARCHIVO_FLASH){
+            $archivo=$this->getArchivo();
+            $carpeta="publicidad";
+        }else{
+            if(file_exists($this->getAbosluteThumbnailPath())){
+                $archivo=$this->getArchivo();
+                $carpeta="publicidad/thumbnails";
+            }else{
+                $this->crearThumbnail($this->getWidth(),$this->getHeight());
+                $archivo=$this->getArchivo();
+                $carpeta="publicidad/thumbnails";
+            }
+        }
+        
         $opciones=array(
-            'tipo_archivo'  => Richsys::getTipoArchivo($this->getArchivo()),
-            'archivo'   =>  $this->getArchivo(),
-            'carpeta'   =>  'publicidad',
+            'tipo_archivo'  => $tipoArchivo,
+            'archivo'   =>  $archivo,
+            'carpeta'   =>  $carpeta,
             'width'     =>  $this->getWidth(),
             'height'    =>  $this->getHeight(),
         );
@@ -476,18 +541,19 @@ class Publicidad
         return Richsys::getArchivoView($opciones);
     }
     public function getWidth(){
+        $resp=0;
         switch($this->getTipoPublicidad()){
             case self::$NIVEL1: //460x130
             case self::$NIVEL2: //460x260
                 $resp=460;
                 break;
-            case self::$NIVEL4:
-            case self::$NIVEL6:    
+            case self::$NIVEL3:
+            case self::$NIVEL5:    
                 //680x120
                 $resp=680;
                 break;
-            case self::$NIVEL5:
-            case self::$NIVEL7:
+            case self::$NIVEL4:
+            case self::$NIVEL6:
                 //325x120
                 $resp=325;
                 break;
@@ -495,6 +561,7 @@ class Publicidad
         return $resp;
     }
     public function getHeight(){
+        $resp=0;
         switch($this->getTipoPublicidad()){
             case self::$NIVEL1: //460x130
                 $resp=130;
@@ -502,10 +569,10 @@ class Publicidad
             case self::$NIVEL2: //460x260
                 $resp=260;
                 break;
-            case self::$NIVEL4: //680x120
-            case self::$NIVEL6: //680x120   
+            case self::$NIVEL3: //680x120
+            case self::$NIVEL4: //680x120   
             case self::$NIVEL5: //325x120
-            case self::$NIVEL7: //325x120
+            case self::$NIVEL6: //325x120
                 $resp=120;
                 break;
         }

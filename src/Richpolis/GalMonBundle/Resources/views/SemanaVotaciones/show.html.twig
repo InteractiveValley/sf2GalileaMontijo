@@ -155,13 +155,13 @@
     }
     
     
-    
-    function aplicarGallerySorteable(){
-        $("#gallery" ).sortable({
+    function aplicarGallerySorteable($gallery){
+        $gallery.sortable({
             handle: '.image-sorteable',
+            placeholder: "ui-state-highlight",
             update: function(){
                 $('#image-loader').show();
-                var order = $('#gallery').sortable('serialize');
+                var order = $gallery.sortable('serialize');
                 $.post('{{path('semana_votaciones_ordenar')}}?'+order,
                  {'semana':'{{entity.id}}'},
                  function(data){
@@ -177,17 +177,30 @@ $(function() {
    var $gallery = $( "#gallery" ),
    $trash = $( "#papelera" );
    
-   aplicarGallerySorteable();
-    $( "#gallery" ).disableSelection();
+   aplicarGallerySorteable($gallery);
+    $gallery.disableSelection();
    
     $trash.droppable({
-      accept: "#gallery > li",
-      activeClass: "ui-state-highlight",
+      accept: "#gallery > li,#gallery_para_aprobar > li",
+      activeClass: "ui-state-default",
+      hoverClass: "ui-state-highlight",
       drop: function( event, ui ) {
         ui.draggable.find(".eliminar-item").click();
       }
     });
-      
+    
+    $("li.semana-tipo").each(function(){
+       var $semana=$(this);
+       $semana.droppable({
+            accept: "#gallery > li",
+            activeClass: "ui-state-default",
+            hoverClass: "ui-state-highlight",
+            drop: function( event, ui ) {
+                cambiarSemanaVotaciones(ui.draggable,$semana);
+            }
+       }); 
+    });
+     
 });
 </script>
 {% endblock %}
@@ -201,7 +214,7 @@ $(function() {
             <a href="{{path('semana_votaciones_show',{'id':semana_actual.id})}}">{{semana_actual.tema | raw }}</a>
         </li>
     {% else %}
-        <li class="semana-tipo active" semana="{{semana_actual.id}}">
+        <li class="semana-tipo-active active" semana="{{semana_actual.id}}">
             <a href="">{{ semana_actual.tema | raw }}</a>
         </li>
     {% endif %}
@@ -216,7 +229,7 @@ $(function() {
             <a href="{{ path('semana_votaciones_show',{'id':semana.id}) }}">{{ semana.tema | raw }}</a>
         </li>
         {% else %}
-        <li class="semana-tipo active" semana="{{ semana.id }}">
+        <li class="semana-tipo-active active" semana="{{ semana.id }}">
             <a href="">{{ semana.tema | raw }}</a>
         </li>
         {% endif %}
@@ -228,7 +241,7 @@ $(function() {
 {% endblock %}
 
 {% block menu_horizontal %}
-    {% include 'RichpolisBackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'galerias'} %}
+    {% include 'RichpolisBackendBundle:Default:menu_horizontal.html.twig' with {'pagina': 'votaciones'} %}
 {% endblock %}
 
 

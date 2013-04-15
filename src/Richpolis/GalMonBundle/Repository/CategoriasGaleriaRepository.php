@@ -3,6 +3,7 @@
 namespace Richpolis\GalMonBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Richpolis\GalMonBundle\Entity\CategoriasGaleria;
 
 /**
  * CategoriasGaleriaRepository
@@ -35,28 +36,38 @@ class CategoriasGaleriaRepository extends EntityRepository
     public function getCategoriaActualPorTipoCategoria($tipoCategoria){
         $em=$this->getEntityManager();
         $query=$em->createQuery('
-                    SELECT p FROM RichpolisGalMonBundle:CategoriasGaleria p 
+                    SELECT p,g FROM RichpolisGalMonBundle:CategoriasGaleria p 
                     LEFT JOIN p.galerias g 
                     WHERE p.tipoCategoria = :tipo 
+                    AND g.isActive=:activeGaleria 
                     AND p.isActive = :active 
-                    ORDER BY g.posicion DESC
-                ')->setParameters(array('tipo'=> $tipoCategoria,'active'=>true));
-        $categorias= $query->getResult();
-        return $categorias[0];
+                    ORDER BY g.posicion ASC
+                ')->setParameters(array('tipo'=> $tipoCategoria,'active'=>true,'activeGaleria'=>true));
+        $categorias=$query->getResult();
+        if(isset($categorias[0])){
+            return $categorias[0];
+        }else{
+            return null;
+        }
         
     }
     
     public function getCategoriaConGaleriaPorId($categoria_id,$active=true){
         $em=$this->getEntityManager();
         $query=$em->createQuery('
-                    SELECT p 
+                    SELECT p,g 
                     FROM RichpolisGalMonBundle:CategoriasGaleria p 
-                    LEFT JOIN p.galerias g 
+                    JOIN p.galerias g 
                     WHERE p.id = :categoria 
                     AND p.isActive = :active 
                     ORDER BY g.posicion DESC
                 ')->setParameters(array('categoria'=> $categoria_id,'active'=>true));
-        return $query->getSingleResult();
+        $categorias=$query->getResult();
+        if(isset($categorias[0])){
+            return $categorias[0];
+        }else{
+            return null;
+        }
     }
     public function getCategoriasPorTipoCategoria($tipoCategoria,$categoria_actual=0,$active=true){
         $em=$this->getEntityManager();
@@ -94,12 +105,30 @@ class CategoriasGaleriaRepository extends EntityRepository
     public function getCategoriasActuales(){
         $em=$this->getEntityManager();
         $query=$em->createQuery('
-                    SELECT c 
+                    SELECT DISTINCT c,g 
                     FROM RichpolisGalMonBundle:CategoriasGaleria c 
                     LEFT JOIN c.galerias g 
-                    GROUP BY c.tipo_categoria 
-                    ORDER BY c.tipo_categoria,c.posicion DESC, g.posicion DESC 
-                ');
+                    WHERE c.isActive=:active 
+                    AND g.isActive=:activeGaleria 
+                    ORDER BY c.tipoCategoria,c.posicion DESC, g.posicion ASC 
+                ')->setParameters(array('active'=>true,'activeGaleria'=>true));
         return $query->getResult();
     }
+    
+    public function getCategoriasValidas($registros){
+        $categorias=array();
+        $categorias['tipo'.CategoriasGaleria::$LO_QUE_ESTOY_VIENDO]=null;
+        $categorias['tipo'.CategoriasGaleria::$DECORA_TU_PANTALLA]=null;
+        $categorias['tipo'.CategoriasGaleria::$GALERIA_OFICIAL]=null;
+        $categorias['tipo'.CategoriasGaleria::$TUS_FOTOS]=null;
+        $lugar=0;
+        
+        foreach($registros as $registro){
+            $lugar=$registro->getTipoCategoria();
+            $categorias['tipo'.$lugar]=$registro;
+        }
+        
+        return $categorias;        
+    }
+    
 }

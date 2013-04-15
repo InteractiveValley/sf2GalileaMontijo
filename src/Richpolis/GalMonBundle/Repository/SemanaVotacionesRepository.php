@@ -27,13 +27,28 @@ class SemanaVotacionesRepository extends EntityRepository {
         if($em==null){
             $em = $this->getEntityManager();    
         }
+        /*
         $query = $em->createQuery('
-                    SELECT s 
-                    FROM RichpolisGalMonBundle:SemanaVotaciones s
-                    WHERE s.isActive = :active
-                    ORDER BY s.posicion ASC
+                   SELECT s,v 
+                   FROM RichpolisGalMonBundle:SemanaVotaciones s 
+                   JOIN s.votaciones v
+                   WHERE s.isActive=:active
+                   ORDER BY s.posicion DESC,v.posicion ASC 
                 ')->setParameters(array('active' => true));
-        return $query->getOneOrNullResult();
+        $semanas=$query->getResult();
+        */
+        
+        $query=$this->createQueryBuilder('s')
+                    //->select(array('s','v'))
+                    //->from('RichpolisGalMonBundle:SemanaVotaciones','s')
+                    //->leftJoin('s.votaciones', 'v')
+                    ->where('s.isActive=:active')
+                    ->setParameter('active', true)
+                    ->orderBy('s.posicion','DESC')
+                    //->addOrderBy('v.posicion','ASC')
+               ;
+        $semanas=$query->getQuery()->getResult();
+        return $semanas[0];
     }
 
     public function getSemanaConGaleriaPorId($semana) {
@@ -41,12 +56,13 @@ class SemanaVotacionesRepository extends EntityRepository {
         $semanas=null;
         if($semana>0){
             $query = $em->createQuery('
-                    SELECT s 
+                    SELECT s,v 
                     FROM RichpolisGalMonBundle:SemanaVotaciones s 
+                    LEFT JOIN s.votaciones v
                     WHERE s.id = :semana 
-                    ORDER BY s.posicion ASC
+                    ORDER BY v.posicion ASC 
                 ')->setParameters(array('semana' => $semana));
-            return $query->getOneOrNullResult();
+                
         }else{
             return $this->getSemanaActual($em);
         }
@@ -79,5 +95,78 @@ class SemanaVotacionesRepository extends EntityRepository {
         $query = $this->getQuerySemanasActivas($active);
         return $query->getResult();
     }
+    
+    public function getImagenSemanaAnterior(){
+        //crear la consulta de solo semanas activas
+        $query=$this->getQuerySemanasActivas(false);
+        $semanas=$query->setMaxResults(2)->getResult();
+        if(count($semanas)>1){
+            //semana actual indice 0, semana anterior indice 1
+            $semana_anterior=$semanas[1];
+            //recuperar la imagen de la semana pasada
+            $em = $this->getEntityManager();
+            $query = $em->createQuery('
+                    SELECT v, f 
+                    FROM RichpolisGalMonBundle:Votaciones v 
+                    LEFT JOIN v.fan f 
+                    WHERE v.semana = :actual 
+                    ORDER BY v.votacion DESC, v.createdAt  
+                ')->setParameters(array("actual" => $semana_anterior));
+            $imagen=$query->getFirstResult();
+            /*$queryImagen=$this->createQueryBuilder('v')
+                              ->from('RichpolisGalMonBundle:Votaciones','v')
+                              ->where('v.semana=:semana_anterior')
+                              ->setParameter('semana_anterior', $semana_anterior)
+                              ->orderBy('v.votacion DESC, v.createdAt');
+            $imagen=$queryImagen->setMaxResults(1)->getQuery()->getFirstResult();*/
+            return $imagen; 
+        }else{
+            // no hay semana anterior
+            return null;
+        }
+    }
+    
+    public function getVotacionesAleatorias(\Richpolis\GalMonBundle\Entity\SemanaVotaciones $semana_actual){
+        if($semana_actual){
+            //recuperamos las votaciones de la semana
+            $em = $this->getEntityManager();
+            $query = $em->createQuery('
+                    SELECT v, f 
+                    FROM RichpolisGalMonBundle:Votaciones v 
+                    LEFT JOIN v.fan f 
+                    WHERE v.semana = :actual 
+                    AND v.isActive=:active 
+                    ORDER BY v.votacion DESC, v.createdAt  
+                ')->setParameters(array("actual" => $semana_actual,"active"=>true));
+            
+            /*
+            $query=$this->createQueryBuilder('v')
+                        ->from('RichpolisGalMonBundle:Votaciones','v')
+                        ->where('v.semana=:semana_actual')
+                        ->setParameter('semana_actual', $semana_actual)
+                        ->orderBy('v.votacion DESC, v.createdAt');
+            $votaciones=$query->getQuery()->getArrayResult();
+             */
+            $votaciones=$query->getResult();
+            //mezclamos el arreglo e instanciamos un arreglo para los resultados
+            shuffle($votaciones);
+            $votacionesShow=array();
+            //solo nos llevamos los tres primeros resultados
+            $cont=0;
+            foreach($votaciones as $votacion){
+                if($cont<3){
+                    $votacionesShow[]=$votacion;
+                    $cont++;
+                }else{
+                    break;
+                }
+            }
+            return $votacionesShow;
+        }else{
+            return null;
+        }
+    }
+    
+    
 
 }

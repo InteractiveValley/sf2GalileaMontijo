@@ -1,0 +1,107 @@
+{{form_errors(formUpload)}}
+<form id="formUpload" 
+      action="{{path('fans_upload_galerias',{'categoria_id':categoria_id})}}" 
+      method="post" 
+      class="form-horizontal" 
+      enctype="multipart/form-data">
+    <div class="control-group">
+        {{ form_label(formUpload.nombre) }}
+        <div class="controls">
+            {{ form_errors(formUpload.nombre) }}
+            {{ form_widget(formUpload.nombre) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label(formUpload.twitter) }}
+        <div class="controls">
+            {{ form_errors(formUpload.twitter) }}
+            {{ form_widget(formUpload.twitter) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label(formUpload.facebook) }}
+        <div class="controls">
+            {{ form_errors(formUpload.facebook) }}
+            {{ form_widget(formUpload.facebook) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label(formUpload.isMostrarDatos) }}
+        <div class="controls">
+            {{ form_errors(formUpload.isMostrarDatos) }}
+            {{ form_widget(formUpload.isMostrarDatos) }}
+        </div>
+    </div>
+    <hr>
+    <div class="control-group">
+        {{ form_label(formUpload.email) }}
+        <div class="controls">
+            {{ form_errors(formUpload.email) }}
+            {{ form_widget(formUpload.email) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label(formUpload.titulo) }}
+        <div class="controls">
+            {{ form_errors(formUpload.titulo) }}
+            {{ form_widget(formUpload.titulo) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label(formUpload.file) }}
+        <div class="controls">
+            {{ form_errors(formUpload.file) }}
+            {{ form_widget(formUpload.file) }}
+        </div>
+    </div>
+  {{form_rest(formUpload) }}
+
+</form>
+<div id="progressbar"><div class="progress-label">Cargando...</div></div>
+
+<script>
+    (function() {
+
+        var progressbar = $("#progressbar"),
+        progressLabel = $(".progress-label");
+
+        progressbar.progressbar({
+            value: false,
+            change: function() {
+                progressLabel.text(progressbar.progressbar("value") + "%");
+            },
+            complete: function() {
+                progressLabel.text("Completo!");
+            }
+        });
+        
+        $("label.required").addClass("control-label").removeClass("required");
+
+        $('form').ajaxForm({
+            beforeSend: function() {
+                progressbar.show("fast");
+                progressbar.progressbar('value', 0);
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                progressbar.progressbar('value', percentComplete);
+            },
+            success: function() {
+                progressbar.progressbar('value', 100);
+            },
+            complete: function(xhr) {
+                respuesta = JSON.parse(xhr.responseText);
+                if (respuesta.ok == "ok") {
+                    $("#modalUploadForm").modal("hide");
+                } else
+                    $("#body-form-modal").html(respuesta);
+
+            }
+        });
+
+    })();
+
+    function submitFormUpload() {
+        $("#formUpload").submit();
+    }
+
+</script>

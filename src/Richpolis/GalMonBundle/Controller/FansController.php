@@ -191,6 +191,14 @@ class FansController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Fans entity.');
             }
+            
+            foreach($entity->getGalerias() as $galeria){
+                $em->remove($galeria);
+            }
+            
+            foreach($entity->getVotaciones() as $votacion){
+                $em->remove($votacion);
+            }
 
             $em->remove($entity);
             $em->flush();

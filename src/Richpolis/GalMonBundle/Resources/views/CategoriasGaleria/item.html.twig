@@ -6,7 +6,9 @@
      class="image-sorteable" 
      title="{{entity.titulo}}" 
      descripcion="{{ entity.titulo }}" 
-     url="{{ path('galerias_edit',{ 'id' : entity.id })}}"/>
+     url="{{ path('galerias_edit',{ 'id' : entity.id })}}"
+     style="max-width: 120px; max-height: 120px;" 
+     />
 <p>
     <button style="float: left;"
             type="button"
@@ -35,4 +37,4 @@
         <i class="icon-remove"></i>
     </button>
 </p>
-</li>
+</li><!--/span-->

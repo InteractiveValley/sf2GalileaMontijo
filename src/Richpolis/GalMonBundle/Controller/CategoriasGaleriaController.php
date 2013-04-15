@@ -113,7 +113,7 @@ class CategoriasGaleriaController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         $categoria_actual = $em->getRepository('RichpolisGalMonBundle:CategoriasGaleria')
-                               ->getCategoriaConGaleriaPorId($id);
+                               ->find($id);
         
         $categorias = $em->getRepository('RichpolisGalMonBundle:CategoriasGaleria')
                 ->getCategoriasPorTipoCategoria($categoria_actual->getTipoCategoria(),$categoria_actual->getId());
@@ -328,7 +328,11 @@ class CategoriasGaleriaController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find CategoriasGaleria entity.');
             }
-
+            
+            foreach($entity->getGalerias() as $galeria){
+                $em->remove($galeria);
+            }
+            
             $em->remove($entity);
             $em->flush();
         }

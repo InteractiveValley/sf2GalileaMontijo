@@ -358,4 +358,27 @@ class Fans
     {
         $this->updatedAt = new \DateTime();
     }
+
+    /**
+     * Set isMostrarDatos
+     *
+     * @param boolean $isMostrarDatos
+     * @return Fans
+     */
+    public function setIsMostrarDatos($isMostrarDatos)
+    {
+        $this->isMostrarDatos = $isMostrarDatos;
+    
+        return $this;
+    }
+
+    /**
+     * Get isMostrarDatos
+     *
+     * @return boolean 
+     */
+    public function getIsMostrarDatos()
+    {
+        return $this->isMostrarDatos;
+    }
 }

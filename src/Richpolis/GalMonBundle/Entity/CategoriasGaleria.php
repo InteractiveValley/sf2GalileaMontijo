@@ -70,15 +70,17 @@ class CategoriasGaleria
     protected $galerias;
     
     static public $LO_QUE_ESTOY_VIENDO=1;
-    static public $GALERIA_OFICIAL=2;
-    static public $TUS_FOTOS=3;
-    static public $DECORA_TU_PANTALLA=4;
+    static public $DECORA_TU_PANTALLA=2;
+    static public $GALERIA_OFICIAL=3;
+    static public $TUS_FOTOS=4;
+    
     
     static private $sCategorias=array(
         1=>'Lo Que Estoy Viendo',
-        2=>'Galeria Oficial',
-        3=>'Tus Fotos',
-        4=>'Decora tu pantalla'
+        2=>'Decora tu pantalla',
+        3=>'Galeria Oficial',
+        4=>'Tus Fotos',
+        
     );
     
     public function __construct() {

@@ -1,56 +1,62 @@
+{# set votaciones = semana.votacionesAleatorias #}
+{# set imagen_semana = semana.imagenSemanaAnterior #}
+
 <div id="contenedor-votaciones">
     <table border="0">
         <tr>
             <td width="315px">
                 <div class="imagen-mas-votada" style="width: 315px;">
                     <div style="margin-left: 20px;">
+                        {% if imagen_semana %}
                         La foto mas votada de la semana pasada: <br/>
-                        "Una foto de tu mascota"<br/>
-                        Por: <span style="color: #3FD4FC;">@Usuario</span><br/>
+                        "{{imagen_semana.titulo}}"<br/>
+                        Por: <span style="color: #3FD4FC;">@{{imagen_semana.fan.twitter}}</span><br/>
                         <div class="show-foto-mas-votada" style="margin: 10px 20px;">
-                            <img src="http://placehold.it/275x275"/><br/>
+                            <img src="{{ imagen_semana.webPath | apply_filter('semana_votaciones_imagen_semana')}}"/><br/>
                             <div style="width: 275px; text-align: right;">
-                                <span style="margin-right: 20px; margin-top: 5px; width: 125px; text-align: center; background-color: red; color: white; padding: 5px;">Ver la galeria</span>
+                                <span style="margin-right: 20px; margin-top: 5px; width: 125px; text-align: center; background-color: red; color: white; padding: 5px;cursor:pointer;" onclick="javascript:showDialogModalRS('{{path('fans_semana_votaciones',{'semana_id': imagen_semana.semanaId })}}');">
+                                    Ver la galeria
+                                </span>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </td>
             <td width="700px" style="background-color: black; color: white;">
                 <div class="contenedor-galeria-votaciones">
                     <div style="width: 100%; height: 30px; text-align: right; font-size: 16pt; padding-top: 10px;">
-                        El tema de la semana: <strong>Una foto que refleje tu color favorito!</strong>
+                        El tema de la semana: <strong>{{semana.tema | raw }}</strong>
                     </div>
                     <div style="width: 100%; height: 10px; text-align: left; font-size: 12pt; padding-top: 10px;">
                         &nbsp;&nbsp;&nbsp;Aleatorias de esta semana:
                     </div>    
                     <ul id="galeria-votaciones">
+                        {% for galeria in votaciones %}
                         <li class="galeria-item">
                             <ul>
-                                <li class="centrar"><span class="galeria-item-titulo"> Titulo por <span style="color: #3FD4FC;">@Usuario</span></span></li>
-                                <li style="background-image: url(http://placehold.it/213x213); background-position: center center; width: 213px; height: 213px;">&nbsp;</li>
-                                <li class="centrar"><span class="galeria-item-votacion">numero <input type="button" value="vota"/></span></li>
+                                <li class="centrar">
+                                    <span class="galeria-item-titulo"> {{galeria.titulo}} por <span style="color: #3FD4FC;">{{galeria.fan.twitter}}</span></span></li>
+                                <li style="background-image: url({{ galeria.webpath | apply_filter('semana_votaciones_imagen')}}); background-position: center center; width: 213px; height: 213px;">&nbsp;</li>
+                                <li class="centrar">
+                                    <div class="btn galeria-item-votacion">
+                                        <span>Votos: {{galeria.votacion}}</span>
+                                        <!--input onclick="javascript:voto('{{path('fans_semana_voto',{'votacion_id':galeria.id})}}','#votacion-{{galeria.id}}')" class="btn" type="button" value="vota"/-->
+                                    </div>
+                                </li>
                             </ul>
                         </li>
-                        <li class="galeria-item">
-                            <ul>
-                                <li class="centrar"><span class="galeria-item-titulo"> Titulo por <span style="color: #3FD4FC;">@Usuario</span></span></li>
-                                <li style="background-image: url(http://placehold.it/213x213); background-position: center center; width: 213px; height: 213px;">&nbsp;</li>
-                                <li class="centrar"><span class="galeria-item-votacion">numero <input type="button" value="vota"/></span></li>
-                            </ul>
-                        </li>
-                        <li class="galeria-item">
-                            <ul>
-                                <li class="centrar"><span class="galeria-item-titulo"> Titulo por <span style="color: #3FD4FC;">@Usuario</span></span></li>
-                                <li style="background-image: url(http://placehold.it/213x213); background-position: center center; width: 213px; height: 213px;">&nbsp;</li>
-                                <li class="centrar"><span class="galeria-item-votacion">numero <input type="button" value="vota"/></span></li>
-                            </ul>
-                        </li>
+                        {% endfor %}
                     </ul>
                     <div style="width: 50%; height: 30px; text-align: center; font-size: 16pt; padding-top: 10px; background-color: black;float: left;">
+                        <a href="#modalUploadForm" 
+                            onclick="javascript:showFormUpload('{{path('fans_upload_votaciones',{'semana_id':semana.id})}}','Subir mi foto!')"
+                            role="button" 
+                            data-toggle="modal"> 
                         SUBIR MI FOTO!
+                        </a>
                     </div>
-                    <div style="width: 50%; height: 30px; text-align: center; font-size: 16pt; padding-top: 10px; background-color: red; float: left;">
+                    <div style="width: 50%; height: 30px; text-align: center; font-size: 16pt; padding-top: 10px; background-color: red; float: left;cursor:pointer;" onclick="javascript:showDialogModalRS('{{path('fans_semana_votaciones',{'semana_id': semana.id })}}');">
                         VER TODAS LAS FOTOS!
                     </div>    
                 </div>

@@ -99,7 +99,13 @@ class Votaciones
      */
     private $semana;
 
-
+    
+    public function __construct()
+    {
+        $this->fan=  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->semana=  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive=false;
+    }
 
     /**
      * Get id

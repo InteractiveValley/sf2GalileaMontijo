@@ -130,6 +130,9 @@ nav a:hover {
     width: 100%;
     text-align: center;
     position: relative;
+    background-position: center center; 
+    background-size: 100% auto; 
+    background-repeat:no-repeat; 
 }
 
 #contenedor-loqueestoyviendo .imagen-show img{
@@ -490,3 +493,27 @@ h1.color-azul-4{
     float: left;
 }
 
+
+
+/** GALERIAS **/
+
+#contenedor-categoria-galeria{
+    width: 100%;
+    height: 400px;
+}
+
+#contenedor-categoria-galeria .imagen-show{
+    height: 305px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    background-position: center center; 
+    background-size: 100% auto; 
+    background-repeat:no-repeat; 
+}
+
+.buttonUploadGaleria{
+    position: absolute;
+    bottom: 50px;
+    left: 30px;
+}

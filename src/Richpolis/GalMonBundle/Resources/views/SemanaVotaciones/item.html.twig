@@ -1,14 +1,17 @@
-<li style=" float: left; margin-right: 5px; list-style: none;" id="registro-{{entity.id}}" class="galeria-item-li">        
+<li id="registro-{{entity.id}}" class="galeria-item-li">        
 <h5>{{ entity.tituloCorto }}</h5>
 <img id="image-{{entity.id}}" 
      entity="{{entity.id}}" 
      src="{{ entity.thumbnailWebPath}}" 
-     class="thumbnail image-sorteable" 
+     class="image-sorteable" 
      title="{{entity.titulo}}" 
      descripcion="{{ entity.titulo }}" 
-     url="{{ path('votaciones_edit',{ 'id' : entity.id })}}"/>
+     url="{{ path('votaciones_edit',{ 'id' : entity.id })}}"
+     style="max-width: 120px; max-height: 120px;" 
+     />
 <p>
-    <button type="button"
+    <button style="float: left;"
+            type="button"
             data-target="#editarFormModal" 
             class="btn editar-item" 
             data-toggle="modal" 
@@ -16,7 +19,8 @@
         <i class="icon-edit"></i>
     </button>
     {% if entity.isactive==false %}
-    <button type="button"
+    <button style="float: left;"
+            type="button"
             data-target="#confirmarActivarFormModal" 
             class="btn activar-item" 
             data-toggle="modal" 

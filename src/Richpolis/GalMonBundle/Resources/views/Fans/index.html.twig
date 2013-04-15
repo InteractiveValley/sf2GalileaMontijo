@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block siderbar %}  
-            <ul class="nav nav-list">
-              <li class="nav-header">Fans</li>
-              <li class="active"><a href="{{path('RichpolisBackendBundle_fans')}}">Fans</a></li>
-              <li><a href="{{path('RichpolisBackendBundle_fans')}}">Clubs de Fans</a></li>
-              </ul>
-            {% endblock %}   
+   <ul class="nav nav-list">
+       <li class="nav-header">Fans</li>
+       <li class="active"><a href="{{path('RichpolisBackendBundle_fans')}}">Fans</a></li>
+       <li><a href="{{path('RichpolisBackendBundle_clubs_fans')}}">Clubs de Fans</a></li>
+   </ul>
+{% endblock %}   
 
 {% block body %}
 {% if app.request.page is not defined %}
@@ -55,16 +55,6 @@
                     <li>
                         <a class="btn btn-mini" href="{{ path('fans_edit', { 'id': entity.id }) }}" title="Editar registro">
                             <i class="icon-edit"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn btn-mini" href="{{ path('fans_up', { 'id': entity.id ,'page': page}) }}" title="Subir registro">
-                            <i class="icon-hand-up"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn btn-mini" href="{{ path('fans_down', { 'id': entity.id, 'page': page }) }}" title="Bajar registro">
-                            <i class="icon-hand-down"></i>
                         </a>
                     </li>
                 </ul>

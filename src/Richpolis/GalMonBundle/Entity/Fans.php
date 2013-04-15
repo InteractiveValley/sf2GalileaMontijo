@@ -137,8 +137,13 @@ class Fans
      */
     public function setTwitter($twitter)
     {
+        if(strlen($twitter)>1){
+            $letra=substr($twitter,1,1);
+            if($letra!="@"){
+                $twitter="@".$twitter;
+            }
+        }
         $this->twitter = $twitter;
-    
         return $this;
     }
 

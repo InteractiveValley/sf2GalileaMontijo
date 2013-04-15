@@ -5,6 +5,9 @@
     <li {% if pagina=="galerias" %} class="active" {% endif %}>
         <a href="{{path('RichpolisBackendBundle_categorias_galerias')}}">Galerias</a>
     </li>
+    <li {% if pagina=="votaciones" %} class="active" {% endif %}>
+        <a href="{{path('RichpolisBackendBundle_semana_votaciones')}}">Votaciones</a>
+    </li>
     <li {% if pagina=="publicaciones" %} class="active" {% endif %}>
         <a href="{{path('RichpolisBackendBundle_publicaciones')}}">Publicaciones</a>
     </li>

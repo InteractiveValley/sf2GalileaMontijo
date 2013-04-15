@@ -58,6 +58,14 @@ class qqUploadedFileXhr {
  */
 class qqUploadedFileForm {
 
+    var $file;
+    var $request=null;
+    
+    public function __construct($file="qqfile",$request=null) {
+        $this->file=$file;
+        $this->request=$request;
+    }
+    
     /**
      * Save the file to the specified path
      * @return boolean TRUE on success
@@ -85,15 +93,18 @@ class qqFileUploader {
     private $sizeLimit = 10485760;
     private $file;
 
-    function __construct(array $allowedExtensions = array(), $sizeLimit = 10485760,$server) {
+    function __construct(array $allowedExtensions = array(), 
+            $sizeLimit = 10485760,$server, $file="qqfile") {
         $allowedExtensions = array_map("strtolower", $allowedExtensions);
 
         $this->allowedExtensions = $allowedExtensions;
         $this->sizeLimit = $sizeLimit;
         
-        if (isset($_FILES['qqfile'])) {
+        $request = Request::createFromGlobals();
+        
+        if (isset($_FILES[$file])) {
             $this->file = new qqUploadedFileForm();
-        } elseif (isset($_GET['qqfile'])) {
+        } elseif (isset($_GET[$file])) {
             $this->file = new qqUploadedFileXhr($server);
         } else {
             $this->file = false;

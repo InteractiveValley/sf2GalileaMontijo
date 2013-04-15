@@ -92,6 +92,13 @@ class Galerias
      */
     private $fan;
 
+    
+    public function __construct()
+    {
+        $this->fan=  new\Doctrine\Common\Collections\ArrayCollection();
+        $this->categoria=  new\Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive=false;
+    }
 
 
     /**

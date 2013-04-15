@@ -13,13 +13,22 @@ use Doctrine\ORM\EntityRepository;
 class GaleriasRepository extends EntityRepository
 {
     
-    public function getMaxPosicion(){
+    public function getMaxPosicion($tipo_categoria=0){
         $em=$this->getEntityManager();
+        if($tipo_categoria==0){
         $query=$em->createQuery('
             SELECT MAX(g.posicion) as value 
             FROM RichpolisGalMonBundle:Galerias g 
             ORDER BY g.posicion ASC
             ');
+        }else{
+        $query=$em->createQuery('
+            SELECT MAX(g.posicion) as value 
+            FROM RichpolisGalMonBundle:Galerias g 
+            WHERE g.tipoCategoria=:tipo 
+            ORDER BY g.posicion ASC
+            ')->setParameter('tipo', $tipo_categoria);
+        }
         $max=$query->getResult();
         return $max[0]['value'];
     }

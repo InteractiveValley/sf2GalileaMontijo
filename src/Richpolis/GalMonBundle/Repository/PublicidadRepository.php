@@ -3,6 +3,7 @@
 namespace Richpolis\GalMonBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Richpolis\GalMonBundle\Entity\Publicidad;
 
 /**
  * PublicidadRepository
@@ -55,9 +56,41 @@ class PublicidadRepository extends EntityRepository
         $query=$em->createQuery('
                     SELECT p 
                     FROM RichpolisGalMonBundle:Publicidad p 
+                    WHERE p.activedAt<=:hoy 
+                    AND p.inativedAt>=:hoy 
+                    AND p.isActive=:active 
                     GROUP BY p.tipoPublicidad 
                     ORDER BY p.tipoPublicidad,p.posicion DESC 
-                ');
-        return $query->getResult();
+                ')->setParameters(array('active'=> true,'hoy'=>new \DateTime()));
+        return $this->getPublicidadValida($query->getResult());
+        
+    }
+    
+    public function getPublicidadValida($registros){
+        $publicidades=array();
+        $publicidades['nivel1']=$this->getEntityPublicidadDefault(Publicidad::$NIVEL1);
+        $publicidades['nivel2']=$this->getEntityPublicidadDefault(Publicidad::$NIVEL2);
+        $publicidades['nivel3']=$this->getEntityPublicidadDefault(Publicidad::$NIVEL3);
+        $publicidades['nivel4']=$this->getEntityPublicidadDefault(Publicidad::$NIVEL4);
+        $publicidades['nivel5']=$this->getEntityPublicidadDefault(Publicidad::$NIVEL5);
+        $publicidades['nivel6']=$this->getEntityPublicidadDefault(Publicidad::$NIVEL6);
+        $lugar=0;
+        
+        foreach($registros as $registro){
+            $lugar=$registro->getTipoPublicidad();
+            $publicidades['nivel'.$lugar]=$registro;
+        }
+        
+        return $publicidades;        
+    }
+    
+    public function getEntityPublicidadDefault($tipo){
+        $entity=new Publicidad();
+        $entity->setTipoPublicidad($tipo)
+                ->setLink("http://wwww.galileamontijo.com")
+                ->setPosicion(1)
+                ->setIsActive(true)
+                ->setArchivo("flashvortex.swf");
+        return $entity;
     }
 }
